@@ -2,7 +2,7 @@
 
 무영CM 현장 업무 앱의 휴대폰(아이폰·갤럭시) 웹앱 배포본입니다. GitHub Pages로 열립니다.
 
-- 주소: https://junuming.github.io/mycm-on/
+- 주소: https://junuming.github.io/MYCM-ON/
 - 아이폰: Safari로 열고 공유 › **홈 화면에 추가**
 - 갤럭시: 삼성 인터넷 메뉴(≡) › **현재 페이지 추가 › 홈 화면** (크롬은 메뉴 › 앱 설치)
 
