@@ -3069,7 +3069,9 @@
       setInterval(() => { if (navigator.onLine !== false) reg.update().catch(() => {}); }, 3 * 3600e3);
       document.addEventListener('visibilitychange', () => { if (!document.hidden && navigator.onLine !== false) reg.update().catch(() => {}); });
     }).catch((e) => console.warn('sw', e));
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (reloading) return; reloading = true; location.reload(); });
+    // 처음 설치될 때(전에 관리자가 없던 화면)는 다시 열지 않는다: 쓰던 화면이 갑자기 새로 고쳐지지 않게
+    const hadCtl = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (!hadCtl || reloading) return; reloading = true; location.reload(); });
   }
   function showUpdate(reg) {
     banner('update', `<b>새 판이 있습니다</b><span>받아 두었습니다. 지금 바꾸면 앱이 한 번 다시 열립니다.</span>`, [['나중에', 'later'], ['지금 바꾸기', 'go', true]], (v) => {
