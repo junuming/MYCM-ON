@@ -465,6 +465,98 @@
   .drop { position: fixed; inset: 12px; border: 3px dashed var(--navy); border-radius: 18px; background: rgba(16, 32, 121, .10); display: grid; place-items: center; font-size: 20px; font-weight: 700; color: var(--navy); z-index: 45; pointer-events: none; }
   .panel-toggle { display: none; }
 
+
+  /* ===== AI (현장 PC를 거쳐) ===== */
+  #home-alert:empty { display: none; }
+  .halert { display: flex; gap: 14px; align-items: center; padding: 16px 18px; border-radius: 16px; border: 1px solid #F2B8BF; background: var(--red-soft); }
+  .halert .ic { width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; color: var(--red-ink); display: grid; place-items: center; flex: none; }
+  .halert .ic svg { width: 24px; height: 24px; }
+  .halert .tx { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+  .halert .tx b { font-size: 17px; color: var(--red-ink); }
+  .halert-btn { min-height: 56px; padding: 0 20px; font-size: 16.5px; flex: none; gap: 8px; }
+  .aiq { display: flex; gap: 14px; }
+  .aiq button { flex: 1; min-width: 0; min-height: 70px; border-radius: 14px; border: 1px solid #C9CFEA; background: linear-gradient(180deg, #F7F8FD, var(--navy-soft)); display: flex; align-items: center; gap: 12px; padding: 10px 16px; text-align: left; color: var(--navy); }
+  .aiq .ic { width: 42px; height: 42px; border-radius: 12px; background: var(--navy); color: #FFFFFF; display: grid; place-items: center; flex: none; }
+  .aiq .tx { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .aiq .tx b { font-size: 17px; }
+  .aiq .tx span { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* 말로 쓰기 */
+  .vo { display: flex; flex-direction: column; gap: 14px; }
+  .vo-hint { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-2); }
+  .vo-mic { display: flex; align-items: center; gap: 16px; padding: 14px 18px; border-radius: 18px; border: 1px solid var(--line); background: var(--surface-2); text-align: left; min-height: 84px; }
+  .vo-mic .ring { width: 58px; height: 58px; border-radius: 50%; background: var(--navy); color: #FFFFFF; display: grid; place-items: center; flex: none; }
+  .vo-mic[data-mode="rec"] { border-color: #F2B8BF; background: var(--red-soft); }
+  .vo-mic[data-mode="rec"] .ring { background: var(--red); animation: vopulse 1.4s ease-in-out infinite; }
+  .vo-mic[data-mode="busy"] .ring { background: var(--faint); }
+  .vo-tx { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .vo-tx b { font-size: 18px; font-variant-numeric: tabular-nums; }
+  .vo-tx span { font-size: 13.5px; color: var(--muted); }
+  .vo-meter { width: 90px; height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; flex: none; }
+  .vo-meter i { display: block; height: 100%; width: 0; background: var(--red); transition: width .08s; }
+  @keyframes vopulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(214, 7, 28, .35); } 50% { box-shadow: 0 0 0 10px rgba(214, 7, 28, 0); } }
+  .kvt { width: 100%; border-collapse: collapse; font-size: 15px; }
+  .kvt th { width: 88px; text-align: left; vertical-align: top; color: var(--muted); font-weight: 600; padding: 9px 8px 9px 0; border-bottom: 1px solid var(--line-2); white-space: nowrap; }
+  .kvt td { padding: 9px 0; border-bottom: 1px solid var(--line-2); line-height: 1.55; }
+  /* 사진 AI */
+  .ph-ai { display: flex; gap: 8px; }
+  .btn.ai { flex: 1; border-color: #C9CFEA; background: var(--navy-soft); color: var(--navy); gap: 8px; }
+  .btn.ai:disabled { opacity: .7; }
+  .ai-card { border: 1px solid #C9CFEA; background: #F8F9FE; border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+  .ai-card .h { display: flex; align-items: center; gap: 8px; }
+  .ai-card .h b { flex: 1; font-size: 15.5px; }
+  .ai-card .spark { color: var(--navy); display: grid; }
+  .ai-card .b { font-size: 14.5px; line-height: 1.55; color: var(--ink-2); }
+  .ai-card .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ai-card .f { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .ai-card .f .meta { font-size: 13px; color: var(--muted); flex: 1 1 100%; }
+  .ai-card .f .grow { display: none; }
+  .tag { display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 700; font-style: normal; line-height: 20px; white-space: nowrap; background: var(--line-2); color: var(--ink-2); }
+  .tag.red { background: var(--red-soft); color: var(--red-ink); }
+  .tag.ok { background: var(--ok-soft); color: var(--ok); }
+  .tag.warn { background: var(--warn-soft); color: var(--warn); }
+  /* AI 묻기 */
+  .ask-body { flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--bg); }
+  .ask-main { flex: 1; min-height: 0; overflow-y: auto; padding: 20px var(--gutter-r) 12px var(--gutter-l); }
+  .ask-thread { max-width: 960px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+  .ask-note { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; padding: 16px 18px; border-radius: 14px; background: var(--warn-soft); color: var(--warn); font-size: 14.5px; line-height: 1.55; }
+  .ask-note b { font-size: 16px; }
+  .ask-note .btn { margin-top: 6px; }
+  .ask-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: 40px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+  .ask-empty .spark { width: 56px; height: 56px; border-radius: 16px; background: var(--navy-soft); color: var(--navy); display: grid; place-items: center; }
+  .ask-empty .spark svg { width: 30px; height: 30px; }
+  .ask-empty b { font-size: 19px; }
+  .ask-empty > span { max-width: 560px; font-size: 15px; line-height: 1.6; color: var(--muted); }
+  .ask-empty .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px; }
+  .ask-empty .chip { min-height: 40px; padding: 0 14px; font-size: 14.5px; border: 1px solid #C9CFEA; }
+  .turn { display: flex; flex-direction: column; gap: 10px; }
+  .turn > .qb { align-self: flex-end; max-width: 85%; background: var(--navy); color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 10px 14px; font-size: 16px; line-height: 1.5; white-space: pre-wrap; }
+  .ans { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 16px 16px 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+  .ans.run { flex-direction: row; align-items: center; gap: 12px; }
+  .ans.fail { flex-direction: row; align-items: center; gap: 10px; background: var(--red-soft); border-color: transparent; color: var(--red-ink); }
+  .ans.fail span { flex: 1; }
+  .asteps { flex: 1; display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--muted); }
+  .asteps .now { color: var(--navy); font-weight: 600; }
+  .atext { font-size: 16px; line-height: 1.7; }
+  .cite { display: inline-grid; place-items: center; min-width: 24px; height: 24px; padding: 0 5px; margin: 0 2px; border-radius: 7px; border: 0; background: var(--navy-soft); color: var(--navy); font-size: 12.5px; font-weight: 700; vertical-align: 1px; }
+  .srcs { display: flex; flex-direction: column; gap: 8px; }
+  .srcs .h { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .src { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--surface-2); transition: background .3s; }
+  .src.flash { background: var(--warn-soft); }
+  .src .n { width: 24px; height: 24px; border-radius: 7px; background: var(--navy); color: #FFFFFF; display: grid; place-items: center; font-size: 12.5px; font-weight: 700; flex: none; }
+  .src .badge { width: 46px; height: 28px; }
+  .src .nm { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .src .nm b { font-size: 14.5px; overflow-wrap: anywhere; }
+  .src .cq { font-size: 13.5px; color: var(--ink-2); line-height: 1.5; border-left: 3px solid #C9CFEA; padding-left: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .src .w { font-size: 12.5px; color: var(--muted); }
+  .src .btn { flex: none; }
+  .recs summary { cursor: pointer; font-size: 14px; color: var(--navy); font-weight: 600; min-height: 32px; display: flex; align-items: center; }
+  .recs .rrow { display: flex; flex-direction: column; gap: 2px; padding: 8px 0; border-bottom: 1px solid var(--line-2); font-size: 14px; }
+  .recs .rrow span { color: var(--muted); font-size: 13px; }
+  .afoot { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line-2); padding-top: 10px; }
+  .ask-box { display: flex; gap: 8px; align-items: flex-end; padding: 10px var(--gutter-r) max(12px, env(safe-area-inset-bottom, 0px)) var(--gutter-l); background: var(--surface); border-top: 1px solid var(--line); }
+  .ask-box textarea { flex: 1; min-height: 52px; max-height: 160px; resize: none; font-size: 16px; line-height: 1.45; padding: 13px 14px; }
+  .ask-box .btn { min-height: 52px; flex: none; gap: 6px; }
+  .ask-box .btn.icon { width: 52px; padding: 0; justify-content: center; }
   @media (max-width: 1500px) { .mt-sum { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
   @media (max-width: 1400px) {
     .ttool { min-width: 56px; padding: 0 10px; font-size: 15px; }
@@ -498,6 +590,9 @@
     .tiles { grid-template-columns: minmax(0, 1fr); }
     .tile { min-height: 0; }
     .quick { flex-direction: column; }
+    .aiq { flex-direction: column; gap: 10px; }
+    .halert { flex-wrap: wrap; }
+    .halert-btn { flex: 1 1 100%; }
     .lib-body, .ph-body, .mt-body { flex-direction: column; }
     .sidenav { width: auto; flex-direction: row; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 8px 12px; }
     .sidenav .h { display: none; }
@@ -559,6 +654,27 @@
     .quick button svg { width: 24px; height: 24px; }
     .quick .rec { width: 16px; height: 16px; margin: 4px 0; }
     #q-capture { background: var(--navy); color: #FFFFFF; border-color: var(--navy); }
+    .aiq { order: 2; flex-direction: row; gap: 8px; }
+    .aiq button { min-height: 64px; padding: 8px 10px; gap: 8px; min-width: 0; }
+    .aiq .ic { width: 36px; height: 36px; border-radius: 10px; }
+    .aiq .tx b { font-size: 15px; }
+    .aiq .tx span { font-size: 12px; }
+    #home-alert { order: 0; }
+    .halert { padding: 14px; gap: 10px; }
+    .halert .tx { font-size: 13.5px; }
+    .ask-main { padding: 14px 12px 10px; }
+    .src { flex-wrap: wrap; align-items: flex-start; }
+    .src .badge { display: none; }
+    .src .nm { flex-basis: calc(100% - 40px); }
+    .src .btn { margin-left: auto; min-height: 44px; }
+    #v-ask .bar { flex-wrap: nowrap; }
+    #v-ask .bar .sub { display: none; }
+    #v-ask .titleblock { min-width: 0; }
+    #ask-new { min-height: 40px; padding: 0 12px; font-size: 14px; }
+    .ask-box textarea { min-height: 48px; }
+    .ask-box .btn { min-height: 48px; }
+    .ask-box .btn.icon { width: 48px; }
+    .vo-meter { width: 56px; }
     .tiles { order: 3; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .tile { min-height: 0; padding: 14px 14px 12px; border-radius: 16px; gap: 6px; }
     .tile .ic { width: 40px; height: 40px; border-radius: 11px; }
@@ -634,6 +750,7 @@
     </header>
     <main class="home-main">
       <section class="home-left">
+        <div id="home-alert" hidden></div>
         <div class="home-head">
           <h1>오늘 현장 업무</h1>
           <p>도면과 문서는 이 기기에 저장되어, 통신이 끊겨도 앱을 열어 둔 동안 그대로 열립니다.</p>
@@ -668,6 +785,10 @@
           <button type="button" id="q-capture"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>바로 사진 찍기</button>
           <button type="button" id="q-meeting"><span class="rec" aria-hidden="true"></span>새 회의 기록</button>
           <button type="button" id="q-find"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>도면·문서 찾기</button>
+        </div>
+        <div class="aiq" id="home-ai" hidden>
+          <button type="button" id="q-voice"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></span><span class="tx"><b>말로 업무일지</b><span id="q-voice-s">말하면 인원·장비·작업 칸으로</span></span></button>
+          <button type="button" id="q-ask"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg></span><span class="tx"><b>AI 묻기</b><span id="q-ask-s">시방서·도면에서 근거와 함께</span></span></button>
         </div>
       </section>
       <aside class="home-right">
@@ -834,6 +955,24 @@
     </div>
   </section>
 
+  <!-- AI 묻기 (현장 PC를 거쳐) -->
+  <section class="view" id="v-ask" hidden aria-label="AI 묻기">
+    <header class="bar tall">
+      <button class="home-btn" type="button" data-home><img src="symbol.png" alt="">홈</button>
+      <div class="titleblock"><h1>AI 묻기</h1><div class="sub" id="ask-sub"></div></div>
+      <span class="grow"></span>
+      <button class="btn" type="button" id="ask-new" hidden>새로 묻기</button>
+    </header>
+    <div class="ask-body">
+      <div class="ask-main" id="ask-main"><div class="ask-thread" id="ask-thread"></div></div>
+      <form class="ask-box" id="ask-form">
+        <textarea class="field" id="ask-in" rows="1" placeholder="예: 슬래브 거푸집은 언제 떼도 되나?" aria-label="물어볼 말"></textarea>
+        <button class="btn icon" type="button" id="ask-mic" aria-label="말로 묻기"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg></button>
+        <button class="btn primary" type="submit"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5z"/></svg><span class="hide-sm">묻기</span></button>
+      </form>
+    </div>
+  </section>
+
   <!-- 회의록 -->
   <section class="view" id="v-minutes" hidden aria-label="회의록">
     <header class="bar tall">
@@ -862,7 +1001,7 @@
 <div class="drop" id="drop" hidden>놓으면 자료함에 추가합니다</div>
 <button class="rec-pill" id="rec-pill" type="button" hidden><i class="dot" aria-hidden="true"></i>녹음 중 <span id="rec-pill-t" class="num">0:00</span><span class="go">회의록 보기</span></button>
 
-<script>window.MYCM_TARGET = 'pwa'; window.MYCM_VERSION = '2.5.0';</script>
+<script>window.MYCM_TARGET = 'pwa'; window.MYCM_VERSION = '2.6.0';</script>
 <script src="vendor/earcut.min.js"></script>
 <script src="vendor/pdf.min.js"></script>
 <script>
@@ -3273,6 +3412,11 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
   // ---------------- 플랫폼 기능 ----------------
   const cap = {};
   function use(name) {
+    // 회의록 AI 정리: 현장 PC에 연결되어 있으면 PC의 AI로 (이 기기 키는 PC에 닿지 않을 때만)
+    if (name === 'sample' && STANDALONE && App.ai && App.ai.paired()) {
+      const local = window.MYCM_NATIVE ? window.MYCM_NATIVE.use('sample') : null;
+      return Promise.resolve(App.ai.pickSampler(local));
+    }
     if (STANDALONE) { if (!cap[name]) cap[name] = Promise.resolve(window.MYCM_NATIVE ? window.MYCM_NATIVE.use(name) : null); return cap[name]; }
     if (!cap[name]) cap[name] = (window.claude && window.claude.use) ? window.claude.use(name).catch(() => null) : Promise.resolve(null);
     return cap[name];
@@ -3381,7 +3525,7 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
   App.extOf = extOf;
   function fileMeta(r) { return [r.trade, r.pub ? `현장 PC에서 받음 · ${r.pubVer || 1}판` : '', rel(r.openedAt || r.addedAt), sizeKo(r.size || 0)].filter(Boolean).join(' · '); }
   App.fileMeta = fileMeta;
-  function siteFiles(kind) { return App.files.filter(r => App.inSite(r) && (!kind || EXT_KIND[r.ext] === kind)); }
+  function siteFiles(kind) { return App.files.filter(r => !r.transient && App.inSite(r) && (!kind || EXT_KIND[r.ext] === kind)); }
   App.siteFiles = siteFiles;
   const byRecent = (a, b) => (b.openedAt || b.addedAt || 0) - (a.openedAt || a.addedAt || 0);
 
@@ -3598,6 +3742,8 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
       todays.slice(0, 4).forEach(p => thumbUrl(p).then(u => { const b = box.querySelector(`[data-photo="${CSS.escape(p.id)}"]`); if (b && u) b.innerHTML = `<img src="${u}" alt="">`; }));
     }
     renderNet();
+    if (App.ai) App.ai.renderHome();
+    if (App.sync && App.sync.renderAlert) App.sync.renderAlert();
   }
   App.renderHome = renderHome;
   $('#home-trades').addEventListener('click', (e) => { const b = e.target.closest('[data-ht]'); if (b) { homeTrade = b.dataset.ht; renderHome(); } });
@@ -3852,7 +3998,7 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
         <label class="lbl">사용자 이름<input class="field" id="ap-name" value="${esc(store.get('userName', ''))}" placeholder="예: 홍길동 (회의록 작성자로 들어갑니다)" autocomplete="off" maxlength="30"></label>
         <dl class="kv"><dt>현장</dt><dd>${App.sites.length ? App.sites.length + '곳' : '없음'}</dd><dt>도면·문서</dt><dd>${App.files.length}개</dd><dt>사진</dt><dd>${App.photos.length}장</dd><dt>회의 기록</dt><dd>${App.meetings.length}건</dd><dt>사용 중인 저장 공간</dt><dd>${used ? sizeKo(used) : '–'}</dd>${ver ? `<dt>앱 버전</dt><dd>${esc(ver)}</dd>` : ''}</dl>
         <p style="font-size:14.5px;margin:0">${PWA ? '자료는 이 기기의 MYCM-ON 웹앱 안에만 저장됩니다. 홈 화면 아이콘을 지우거나 브라우저 사이트 데이터를 지우면 함께 사라지니, PC 연동을 켜 두거나 사진대지와 회의록을 PDF로 저장해 보관해 주세요. 새 판은 인터넷이 될 때 저절로 받습니다.' : "자료는 이 기기 안에만 저장됩니다. 앱을 지우거나 '앱 데이터 삭제'를 하면 함께 사라지니, 사진대지와 회의록은 PDF로 저장해 보관해 주세요. 새 버전 APK는 지우지 말고 그 위에 설치하면 자료가 그대로 남습니다."}</p>
-        <div class="lbl">AI 정리 (선택)<span style="font-weight:400;color:var(--muted);font-size:14px">회사 Anthropic API 키를 넣으면, 인터넷이 될 때 회의 기록을 결정 사항과 할 일로 정리합니다. 키는 이 기기에만 저장됩니다.</span>
+        <div class="lbl">AI 키 (선택)<span style="font-weight:400;color:var(--muted);font-size:14px">${App.sync && App.sync.configured ? '현장 PC에 연결되어 있어 AI는 현장 PC에 넣은 회사 키로 씁니다. 여기 키는 현장 PC에 닿지 않을 때 회의록 정리에만 씁니다.' : '현장 PC에 연결하면 PC에 넣은 회사 키로 AI(회의록 정리·사진 지적사항 초안·말로 업무일지·AI 묻기)를 씁니다. PC 없이 회의록만 정리하려면 여기에 회사 Anthropic API 키를 넣으세요. 키는 이 기기에만 저장됩니다.'}</span>
         <input class="field" id="ap-key" type="password" value="${esc(key)}" placeholder="sk-ant-..." autocomplete="off" spellcheck="false"></div>`,
       actions: [{ label: '닫기' }, { label: '저장', kind: 'primary', value: (b) => ({ name: $('#ap-name', b).value.trim(), key: $('#ap-key', b).value.trim() }) }],
       onMount(b, close) { $('#ap-sync', b).addEventListener('click', () => { close('sync'); }); }
@@ -3910,6 +4056,7 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
     setTimeout(() => { if (navigator.onLine !== false || PWA) runPrep(); else renderNet(); }, 1200);   // 웹앱은 기기에 보관한 엔진을 쓰므로 인터넷이 없어도
     if (PWA) window.addEventListener('online', () => { if (prep.state === 'failed') runPrep(); });
     if (App.sync) App.sync.init();
+    if (App.ai) App.ai.init();
     try { if (navigator.storage && navigator.storage.persisted) { const p = await navigator.storage.persisted(); if (!p && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } } catch (e) { /* 무시 */ }
   };
 })();
@@ -6615,8 +6762,30 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
     ];
   }
 
+  // 근거로 열기: 그 쪽으로 가고, 찾는 말이 그 쪽에 있으면 표시
+  async function jump(o) {
+    o = o || {};
+    if (!D.n) return;
+    const pg = Math.max(1, Math.min(D.n, +o.page || 1)) - 1;
+    goPage(pg);
+    const qq = String(o.q || '').trim();
+    const words = qq.split(/\s+/).filter(w => w.length >= 2).sort((a, b) => b.length - a.length);
+    if (!words.length || !D.be || !D.be.text) return;
+    openDrawer(true, 'search');
+    const tries = (/\s/.test(qq) && qq.length <= 40 ? [qq] : []).concat(words.slice(0, 3)); // 말 그대로 먼저, 없으면 긴 낱말부터
+    for (const w of tries) {
+      $('#doc-q').value = w;
+      await runSearch();
+      const hits = D.found ? D.found.hits : [];
+      let k = hits.findIndex(h => h.i === pg);
+      if (k < 0 && !o.page) k = 0;
+      if (k >= 0) { D.found.cur = k; if (V.z < 1.3) setZoom(Math.max(V.z, 1.3)); goRect(hits[k].i, hits[k].rect); redrawFound(); return; }
+    }
+    goPage(pg);
+  }
+
   App.views.doc = {
-    open,
+    open, jump,
     show() { requestAnimationFrame(onResize); },
     hide() { commitEditor(); if (D.key) saveNow(); P.clear(); G = null; },
     state: { S, V, D }, exportPdf, setTool, setZoom, undo, redo
@@ -6886,7 +7055,7 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
     return F;
   }
   const TW = A4[0] - 2 * M;
-  function heading(P, F, s) { F.need(40); P.text(F.page, s, M, F.y - 12, 12, NAVY, true); F.y -= 22; }
+  function heading(P, F, s) { F.need(70); /* 제목만 쪽 끝에 홀로 남지 않게 */ P.text(F.page, s, M, F.y - 12, 12, NAVY, true); F.y -= 22; }
   // 칸: [[이름, 값], [이름, 값]] (하나면 한 줄 전체)
   function kvRows(P, F, rows) {
     const fs = 9.5, lh = 14, lw = 62;
@@ -6962,13 +7131,13 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
   }
   const dash = (v) => (v === undefined || v === null || v === '' ? '' : v);
 
-  // ---------------- 작업일보 ----------------
+  // ---------------- 업무일지 ----------------
   async function daily(d, opts) {
     opts = opts || {};
     const P = await begin();
     const site = opts.site || '';
     const dt = new Date(String(d.date || '').length === 10 ? d.date + 'T00:00:00' : (d.date || Date.now()));
-    const F = flow(P, '작업일보', site, App.dateKo(dt.getTime()));
+    const F = flow(P, '업무일지', site, App.dateKo(dt.getTime()));
     const info = opts.info || {};
     const w = d.weather || {};
     const temp = dash(w.tmin) !== '' || dash(w.tmax) !== '' ? `${dash(w.tmin)} ~ ${dash(w.tmax)}℃` : '';
@@ -7002,7 +7171,7 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
         F.need(rowH);
         for (let c = 0; c < 2; c++) {
           const ph = photos[i + c]; if (!ph) break;
-          App.busy(true, '작업일보 만드는 중', 0.2 + 0.7 * (i + c) / photos.length, `사진 ${i + c + 1} / ${photos.length}`);
+          App.busy(true, '업무일지 만드는 중', 0.2 + 0.7 * (i + c) / photos.length, `사진 ${i + c + 1} / ${photos.length}`);
           const x = M + c * (cw + 12);
           await imageBox(P, F.page, ph.blob, x, F.y - ih, cw, ih);
           const cap = P.wrap(ph.caption || '', 8.5, cw - 4)[0] || '';
@@ -7062,7 +7231,121 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
     return P.doc.save();
   }
 
-  App.pdfgen = { photoSheet, minutes, daily, issues };
+  // ---------------- 주간·월간 공사 보고서 ----------------
+  async function report(d, opts) {
+    opts = opts || {};
+    const P = await begin();
+    const site = d.site || opts.site || '';
+    const F = flow(P, d.title || '공사 보고서', site, `${d.from || ''} ~ ${d.to || ''}`);
+    const info = d.info || {};
+    const rows = [[['현장', site]], [['기간', `${d.from || ''} ~ ${d.to || ''}`], ['작성', info.manager || '무영씨엠건축사사무소']]];
+    if (info.client || info.contractor) rows.push([['발주처', info.client], ['시공사', info.contractor]]);
+    kvRows(P, F, rows);
+    let k = 1;
+    heading(P, F, `${k++}. 개요`); para(P, F, d.summary, '–');
+    const st = d.stats || {};
+    const n = (v) => { const x = parseFloat(v); return isFinite(x) ? x : 0; };
+    heading(P, F, `${k++}. 인원·장비 현황`);
+    const mp = (st.manpower || []).map(r => [r.trade || '', String(n(r.period)), String(n(r.cum))]);
+    if (mp.length) { const t = ['합계', String(n(st.manTotal)), String(n(st.manCum))]; t.bold = true; mp.push(t); }
+    grid(P, F, [{ t: '공종', w: TW - 180, a: 'l' }, { t: '기간 인원(명)', w: 90 }, { t: '누계(명)', w: 90 }], mp, '업무일지에 적은 인원이 없습니다.');
+    const eq = (st.equipment || []).map(e => `${e.name} ${n(e.count)}대`).join(', ');
+    const is = st.issues || {};
+    para(P, F, [eq ? '장비(연 대수): ' + eq : '', `지적사항: 기간 중 발행 ${n(is.new)}건 · 종결 ${n(is.closed)}건 · 조치 완료(확인 대기) ${n(is.done)}건 · 미조치 ${n(is.open)}건${n(is.overdue) ? ` (기한 지남 ${n(is.overdue)}건)` : ''}`, `업무일지 ${n(st.days)}일 · 사진 ${n(st.photoCount)}장 · 비·눈 ${n(st.rainDays)}일`].filter(Boolean).join('\n'));
+    for (const sec of d.sections || []) {
+      heading(P, F, `${k++}. ${sec.heading || ''}`);
+      para(P, F, (sec.items || []).map(x => String(x).replace(/^[\s\-·•○▪*]+/, '').trim()).filter(Boolean).map(x => '○ ' + x).join('\n'), '해당 없음');
+    }
+    const photos = (opts.photos || []);
+    if (photos.length) {
+      heading(P, F, `${k++}. 현장 사진`);
+      const cw = (TW - 12) / 2, ih = 168, rowH = ih + 26;
+      for (let i = 0; i < photos.length; i += 2) {
+        F.need(rowH);
+        for (let c = 0; c < 2; c++) {
+          const ph = photos[i + c]; if (!ph) break;
+          if (App.busy) App.busy(true, '보고서 만드는 중', 0.2 + 0.7 * (i + c) / photos.length, `사진 ${i + c + 1} / ${photos.length}`);
+          const x = M + c * (cw + 12);
+          await imageBox(P, F.page, ph.blob, x, F.y - ih, cw, ih);
+          P.text(F.page, P.wrap(ph.caption || '', 8.5, cw - 4)[0] || '', x + 2, F.y - ih - 13, 8.5, MUTED);
+        }
+        F.y -= rowH;
+      }
+    }
+    F.finish();
+    return P.doc.save();
+  }
+
+  // ---------------- 공문 (시정조치 요구서·업무연락서) ----------------
+  async function letter(d, opts) {
+    opts = opts || {};
+    const P = await begin();
+    const [W] = A4;
+    const page = P.doc.addPage(A4);
+    const pages = [page];
+    let cur = page;
+    let y = A4[1] - M;
+    if (P.logo) { const lh = 18, lw = P.logo.width / P.logo.height * lh; cur.drawImage(P.logo, { x: M, y: y - lh, width: lw, height: lh }); }
+    const from = d.from || '';
+    P.text(cur, from, (W - P.width(from, 10.5)) / 2, y - 34, 10.5, MUTED, true);
+    const title = d.title || '공문';
+    P.text(cur, title, (W - P.width(title, 20)) / 2, y - 62, 20, INK, true);
+    y -= 80;
+    cur.drawLine({ start: { x: M, y }, end: { x: W - M, y }, thickness: 1.6, color: P.c(NAVY) });
+    y -= 6;
+    const lw = 62, cw = (TW - 2 * lw) / 2, rh = 22;
+    const kv = (a, b, c2, d2) => {
+      P.rect(cur, M, y - rh, lw, rh, { fill: FILL, border: LINE }); P.text(cur, a, M + (lw - P.width(a, 9.5)) / 2, y - 15, 9.5, MUTED);
+      P.rect(cur, M + lw, y - rh, cw, rh, { border: LINE }); P.text(cur, P.wrap(b || '', 9.5, cw - 10)[0] || '', M + lw + 6, y - 15, 9.5, INK);
+      P.rect(cur, M + lw + cw, y - rh, lw, rh, { fill: FILL, border: LINE }); P.text(cur, c2, M + lw + cw + (lw - P.width(c2, 9.5)) / 2, y - 15, 9.5, MUTED);
+      P.rect(cur, M + 2 * lw + cw, y - rh, cw, rh, { border: LINE }); P.text(cur, P.wrap(d2 || '', 9.5, cw - 10)[0] || '', M + 2 * lw + cw + 6, y - 15, 9.5, INK);
+      y -= rh;
+    };
+    kv('문서번호', d.docNo, '시행일자', d.date);
+    kv('수신', d.to, '참조', d.cc);
+    y -= 18;
+    const need = (h) => { if (y - h < M + 30) { cur = P.doc.addPage(A4); pages.push(cur); y = A4[1] - M - 10; } };
+    const lines = (s, size, indent, color, bold) => {
+      for (const l of P.wrap(s, size, TW - indent)) { need(size + 7); P.text(cur, l, M + indent, y - size, size, color || INK, bold); y -= size + 7; }
+    };
+    lines('제목: ' + (d.subject || ''), 11.5, 0, INK, true);
+    y -= 8;
+    for (const p of d.body || []) {
+      const t = String(p || '');
+      const ind = /^\s*([가-하]\.|-|·|\(\d+\))/.test(t) ? 18 : 0;
+      lines(t.trim(), 10.5, ind);
+      y -= 3;
+    }
+    if (d.deadline) { y -= 6; lines('조치(회신) 기한: ' + d.deadline, 10.5, 0, RED, true); }
+    y -= 6;
+    const att = (d.attachments || []).filter(Boolean);
+    lines(att.length ? `붙임  ${att.join(', ')}.  끝.` : '끝.', 10.5, 0);
+    need(60);
+    y -= 30;
+    P.text(cur, from, W - M - P.width(from, 12), y - 12, 12, INK, true);
+    y -= 30;
+    // 붙임 사진
+    const photos = opts.photos || [];
+    if (photos.length) {
+      cur = P.doc.addPage(A4); pages.push(cur); y = A4[1] - M;
+      P.text(cur, '붙임: 현장 사진', M, y - 14, 12, NAVY, true); y -= 30;
+      const cw2 = (TW - 12) / 2, ih = 190;
+      for (let i = 0; i < photos.length; i += 2) {
+        if (y - ih - 28 < M + 30) { cur = P.doc.addPage(A4); pages.push(cur); y = A4[1] - M; }
+        for (let c = 0; c < 2; c++) {
+          const ph = photos[i + c]; if (!ph) break;
+          const x = M + c * (cw2 + 12);
+          await imageBox(P, cur, ph.blob, x, y - ih, cw2, ih);
+          P.text(cur, P.wrap(ph.caption || '', 8.5, cw2 - 4)[0] || '', x + 2, y - ih - 13, 8.5, MUTED);
+        }
+        y -= ih + 28;
+      }
+    }
+    pages.forEach((pg, i) => P.footer(pg, i + 1, pages.length, d.site || ''));
+    return P.doc.save();
+  }
+
+  App.pdfgen = { photoSheet, minutes, daily, issues, report, letter };
 })();
 
 
@@ -7239,12 +7522,14 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
       <datalist id="ph-dl-floor">${sugg('floor').map(v => `<option value="${esc(v)}">`).join('')}</datalist>
       <datalist id="ph-dl-part">${sugg('part').map(v => `<option value="${esc(v)}">`).join('')}</datalist>
       <label class="lbl">메모<textarea class="field" id="ph-memo" rows="3" placeholder="예: 피복 두께 확인, 스페이서 간격 양호">${esc(p.memo)}</textarea></label>
+      ${App.ai && App.ai.paired() ? `<div class="ph-ai"><button class="btn ai" type="button" data-aiph>${App.ai.SPARK}<span>AI로 지적사항 초안</span></button><button class="btn icon" type="button" data-phmic aria-label="말로 메모">${App.ai.MIC}</button></div><div id="ph-aibox"></div>` : ''}
       <label class="ph-issue${p.issue ? ' on' : ''}"><input type="checkbox" data-issue ${p.issue ? 'checked' : ''}><span><b>지적사항</b><small>${App.sync && App.sync.configured ? '현장 PC의 지적사항 목록에 자동으로 올라갑니다' : '지적할 내용이 있는 사진으로 표시합니다'}</small></span></label>
       <div style="display:flex;gap:8px;margin-top:auto">
         <button class="btn ${p.inSheet ? '' : 'primary'}" type="button" data-sheet style="flex:1">${p.inSheet ? '사진대지에서 빼기' : '사진대지에 넣기'}</button>
         <button class="btn icon" type="button" data-del aria-label="사진 지우기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A8061A" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg></button>
       </div>`;
     fullUrl(p).then(u => { const b = $('.ph-prev', box); if (b && u && S.sel === p.id) b.innerHTML = `<img src="${u}" alt="${esc(title(p))}">`; });
+    if (S.ai && S.ai.id === p.id && App.ai) { const ab = $('#ph-aibox', box); if (ab) ab.innerHTML = App.ai.photoCard(S.ai.r); }
   }
   function current() { return App.photos.find(x => x.id === S.sel); }
   function saveSoon(p) {
@@ -7279,6 +7564,39 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
       p.inSheet = !p.inSheet; saveSoon(p);
       render();
       App.toast(p.inSheet ? `사진대지에 넣었습니다. 지금 ${sheetPhotos().length}장입니다.` : '사진대지에서 뺐습니다.');
+      return;
+    }
+    if (e.target.closest('[data-phmic]')) {
+      const s = await App.ai.listen({ title: '말로 메모', ok: '메모에 넣기', hint: '보이는 것을 말해 주세요. 예: "102동 외부 비계 작업발판 고정 안 됨, 즉시 보강 요청"' });
+      if (!s || current() !== p) return;
+      p.memo = ((p.memo || '').trim() ? p.memo.trim() + '\n' : '') + s;
+      saveSoon(p); renderDetail();
+      App.toast('메모에 넣었습니다. [AI로 지적사항 초안]을 누르면 메모와 사진으로 초안을 만듭니다.');
+      return;
+    }
+    if (e.target.closest('[data-aiph]')) {
+      const btn = e.target.closest('[data-aiph]');
+      if (btn.disabled) return;
+      btn.disabled = true; btn.querySelector('span').textContent = 'AI가 사진을 보는 중…';
+      try {
+        const r = await App.ai.photoDraft(p);
+        if (current() !== p) return;
+        S.ai = { id: p.id, r };
+        const box = $('#ph-aibox'); if (box) { box.innerHTML = App.ai.photoCard(r); box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+      } catch (err) { App.toast(App.ai.msgOf(err), true, 9000); }
+      finally { btn.disabled = false; const sp = btn.querySelector('span'); if (sp) sp.textContent = 'AI로 지적사항 초안'; }
+      return;
+    }
+    if (e.target.closest('[data-aino]')) { S.ai = null; const box = $('#ph-aibox'); if (box) box.innerHTML = ''; return; }
+    if (e.target.closest('[data-aiyes]')) {
+      const r = S.ai && S.ai.id === p.id ? S.ai.r : null; if (!r) return;
+      if (r.trade && TRADES.includes(r.trade)) p.trade = r.trade;
+      for (const k of ['dong', 'floor', 'part']) if (r[k] && !p[k]) p[k] = String(r[k]).slice(0, 40);
+      if (r.memo) p.memo = String(r.memo).slice(0, 600);
+      if (r.is_issue) p.issue = true;
+      S.ai = null;
+      saveSoon(p); render();
+      App.toast(r.is_issue ? (App.sync && App.sync.configured ? 'AI 초안을 넣고 지적사항으로 표시했습니다. 현장 PC 지적사항 목록에 올라갑니다. 확인하고 고쳐 주세요.' : 'AI 초안을 넣고 지적사항으로 표시했습니다.') : 'AI 초안을 넣었습니다.', false, 6000);
       return;
     }
     if (e.target.closest('[data-zoom]')) {
@@ -7937,7 +8255,7 @@ ${lines}`;
       const code = e && e.code;
       if (code === 'cancelled') { /* 멈춤 */ }
       else if (AI_OFF.includes(code)) { S.aiOk = 'no'; App.toast(App.standalone ? '설정에 AI 키를 넣어야 AI 정리를 쓸 수 있습니다. 결정 사항과 할 일은 직접 적어도 됩니다.' : 'AI 정리를 허락하지 않아 쓸 수 없습니다. 결정 사항과 할 일을 직접 적어 주세요.', true); }
-      else App.toast(AI_MSG[code] || 'AI 정리 중 연결이 끊겼습니다. Wi-Fi를 확인하고 다시 눌러 주세요.', true);
+      else App.toast(AI_MSG[code] || (e && e.message) || 'AI 정리 중 연결이 끊겼습니다. Wi-Fi를 확인하고 다시 눌러 주세요.', true, 8000);
     } finally {
       if (S.ai === ctl) { S.ai = null; S.aiFor = null; }
       if (App.view === 'minutes') { renderList(); renderMain(); }
@@ -8373,11 +8691,13 @@ ${lines}`;
     opt = opt || {};
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), opt.timeout || 30000);
+    if (opt.signal) { if (opt.signal.aborted) ctl.abort(); else opt.signal.addEventListener('abort', () => ctl.abort(), { once: true }); }
     try {
       const headers = Object.assign({}, opt.headers || {});
       if (S.cfg && S.cfg.token && !opt.noAuth) headers.Authorization = 'Bearer ' + S.cfg.token;
       if (opt.json !== undefined) headers['Content-Type'] = 'application/json';
       const r = await fetch((opt.base || S.base || S.cfg.url) + path, { method: opt.method || 'GET', headers, body: opt.json !== undefined ? JSON.stringify(opt.json) : opt.body, signal: ctl.signal, cache: 'no-store' });
+      if (opt.blob && r.ok) return { status: r.status, ok: true, j: {}, blob: await r.blob() };
       let j = {}; try { j = await r.json(); } catch (e) { j = {}; }
       return { status: r.status, ok: r.ok, j };
     } finally { clearTimeout(t); }
@@ -8488,6 +8808,7 @@ ${lines}`;
       if (pj.relay && pj.relay !== S.cfg.relay) { S.cfg.relay = pj.relay; S.cfg.relayBase = pj.relayBase || ''; dirty = true; }
       if (dirty) App.store.set('sync', S.cfg);
       S.reach = 'ok'; S.lastErr = '';
+      setAI(pj);
       renderChip();
       for (;;) {
         const all = await refresh();
@@ -8515,9 +8836,31 @@ ${lines}`;
     }
   }
   function revoked() {
+    if (!S.cfg.revoked) S.cfg.revokedAt = Date.now();
     S.cfg.revoked = true; App.store.set('sync', S.cfg);
     S.reach = 'revoked'; S.lastErr = '현장 PC에서 이 기기의 연결을 끊었습니다';
+    S.base = '';
     renderChip();
+  }
+  // 현장 PC의 AI 상태 (ping): 'on' 씀 · 'off' 키 없음/기기 끔 · 'old' AI가 없는 옛 PC 프로그램
+  function setAI(pj) {
+    const st = pj.ai === undefined ? 'old' : pj.ai ? 'on' : 'off';
+    const docs = !!pj.docs;
+    if (st === S.ai && docs === S.docs) return;
+    S.ai = st; S.docs = docs;
+    try { window.dispatchEvent(new CustomEvent('mycm:ai', { detail: { ai: st, docs } })); } catch (e) { /* 무시 */ }
+  }
+  // AI 부탁 전에: 지금 닿는 길이 없으면 찾는다
+  async function ensure(force) {
+    if (!configured()) return false;
+    if (!force && S.reach === 'ok' && S.base) return true;
+    const hit = await connect().catch(() => null);
+    if (!hit) { if (S.reach === 'ok') S.reach = 'down'; renderChip(); return false; }
+    if (hit.revoked) { revoked(); return false; }
+    S.base = hit.u; S.via = hit.via; S.reach = 'ok';
+    setAI(hit.p.j);
+    renderChip();
+    return true;
   }
   async function fail(r, msg) { r.state = 'err'; r.err = msg; r.tries++; await App.DB.put('outbox', r); }
   // 다 보냈다고 적기 (보내는 사이에 새로 쌓였으면 그대로 둔다)
@@ -8743,7 +9086,15 @@ ${lines}`;
     if (S.reach === 'offline') return ['wait', IC.wait, 'PC 연동', '인터넷 없음'];
     return ['ok', IC.ok, 'PC 연동됨', S.via === 'net' && S.reach === 'ok' ? '인터넷' : ''];
   }
+  // 홈 맨 위 알림: 현장 PC에서 연결을 끊었을 때 이유와 [QR로 다시 연결]
+  function renderAlert() {
+    const box = $('#home-alert'); if (!box) return;
+    if (!(ON && S.cfg && S.cfg.revoked)) { box.hidden = true; box.innerHTML = ''; return; }
+    box.hidden = false;
+    box.innerHTML = `<div class="halert bad"><span class="ic">${IC.bad}</span><span class="tx"><b>현장 PC와 연결이 끊겼습니다</b><span>현장 PC에서 이 기기의 연결을 끊었습니다. 현장 PC 화면 › 연결·설정 맨 아래 목록에서 '연결 끊기'를 눌렀거나, 현장 PC 프로그램을 새로 깔았을 때 이렇게 됩니다. 사진·회의는 이 기기에 그대로 있고, 다시 연결하면 이어서 올립니다.</span></span><button class="btn primary halert-btn" type="button" data-repair><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>QR로 다시 연결</button></div>`;
+  }
   function renderChip() {
+    renderAlert();
     const el = $('#sync-chip');
     if (!el) return;
     if (!configured() && !(S.cfg && S.cfg.revoked)) { el.hidden = true; return; }
@@ -8831,7 +9182,8 @@ ${lines}`;
     }
   }
 
-  async function pairSheet() {
+  async function pairSheet(opts) {
+    opts = opts || {};
     const c = S.cfg || {};
     const kind = PWA && window.MYCM_PWA ? window.MYCM_PWA.deviceKind() : '기기';
     const devName = c.deviceName || ((App.userName || App.store.get('userName', '')) ? (App.userName || App.store.get('userName', '')) + '의 ' + kind : '현장 ' + kind);
@@ -8839,7 +9191,7 @@ ${lines}`;
     const v = await App.sheet({
       title: 'PC 연동 켜기',
       wide: true,
-      body: `${c.revoked ? '<p style="margin:0;color:var(--red-ink)">현장 PC에서 이 기기의 연결을 끊었습니다. 연동 코드를 다시 넣어 주세요.</p>' : ''}
+      body: `${c.revoked ? `<div class="halert bad" style="margin:0"><span class="ic">${IC.bad}</span><span class="tx"><b>현장 PC에서 이 기기의 연결을 끊었습니다</b><span>현장 PC 화면 › 연결·설정 맨 아래 목록에서 '연결 끊기'를 눌렀거나, 현장 PC 프로그램을 새로 깔면 이렇게 됩니다. 현장 PC 화면의 QR을 다시 찍으면 바로 이어집니다. 올리지 못한 사진·회의는 그대로 남아 있습니다.</span></span></div>${PWA ? '' : `<button class="btn primary sy-qrbig" type="button" data-qr><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>QR로 다시 연결</button>`}` : ''}
         <p style="margin:0;font-size:15px">현장 PC에 켜 둔 <b>MYCM-ON 현장 PC</b> 프로그램에 이 기기를 연결합니다. 연결하면 찍은 사진, 회의 기록·녹음, 사진대지·회의록·필기 PDF가 자동으로 그 PC에 올라가고, 현장 PC가 보낸 최신 도면·문서는 자료함으로 들어옵니다.${PWA ? '' : ' 같은 공유기면 목록에 뜨고, 다른 인터넷(LTE·다른 와이파이)이면 <b>QR로 연결</b>을 쓰세요.'}</p>
         ${PWA ? `<button class="btn primary sy-qrbig" type="button" id="sy-qr"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><rect x="8" y="8" width="8" height="8" rx="1"/></svg>현장 PC 화면의 QR 찍어 연결하기</button>
         <p style="margin:0;font-size:14px;color:var(--muted)">현장 PC의 MYCM-ON 창 › <b>연결·설정</b>에 있는 QR을 찍으면 끝입니다. 휴대폰은 인터넷(LTE·와이파이)으로 연결하므로, 현장 PC의 <b>인터넷으로도 받기</b>가 켜져 있어야 합니다.</p>
@@ -8899,9 +9251,10 @@ ${lines}`;
           $('#sy-err', b).textContent = '';
           b.closest('.sheet').querySelector('.sheet-f .primary').click();   // 코드까지 들어 있으니 바로 연결
         };
-        b.addEventListener('click', (e) => { const it = e.target.closest('[data-pc]'); if (it) pick(+it.dataset.pc); if (e.target.id === 'sy-refind') run(); if (e.target.closest('#sy-qr')) viaQR(); });
+        b.addEventListener('click', (e) => { const it = e.target.closest('[data-pc]'); if (it) pick(+it.dataset.pc); if (e.target.id === 'sy-refind') run(); if (e.target.closest('#sy-qr, [data-qr]')) viaQR(); });
         $('#sy-url', b).addEventListener('input', () => { delete b.dataset.serverId; b.querySelectorAll('[data-pc]').forEach(el => el.setAttribute('aria-pressed', 'false')); });
         if (!PWA) run();
+        if (opts.qr) setTimeout(viaQR, 250);
       }
     });
     sheetBody = null;
@@ -8962,11 +9315,520 @@ ${lines}`;
     if (navigator.connection && navigator.connection.addEventListener) navigator.connection.addEventListener('change', () => kick(800));
     setInterval(() => { if (!S.running) kick(0); }, 60e3);
     const chip = $('#sync-chip'); if (chip) chip.addEventListener('click', openSheet);
+    document.addEventListener('click', (e) => { if (e.target.closest('[data-repair]')) pairSheet({ qr: true }); });
+    renderAlert();
     if (!navigator.onLine) S.reach = 'offline';
     refresh().then(() => kick(1500));
   }
 
-  App.sync = { add, addLibrary, addPhoto, photoChanged, meetingChanged, open: openSheet, init, kick, sttRequest, sttCancel, sttJob, get sttAvailable() { return configured() && STT.ok !== false && S.cfg.meetings !== false; }, get configured() { return configured(); }, _state: S };
+  App.sync = {
+    add, addLibrary, addPhoto, photoChanged, meetingChanged, open: openSheet, init, kick, sttRequest, sttCancel, sttJob,
+    call, ensure, repair: () => pairSheet({ qr: true }), renderAlert,
+    get sttAvailable() { return configured() && STT.ok !== false && S.cfg.meetings !== false; },
+    get configured() { return configured(); },
+    get revoked() { return !!(S.cfg && S.cfg.revoked); },
+    get ai() { return configured() ? (S.ai || 'unknown') : 'none'; },
+    get docs() { return !!S.docs; },
+    forget() { S.base = ''; if (S.reach === 'ok') S.reach = null; },
+    _state: S
+  };
+})();
+
+
+/* ==== src/ai.js ==== */
+/* AI: 현장 PC를 거쳐 쓴다 (AI 키는 현장 PC에만 있고, 기기·휴대폰은 PC 연동으로 부탁한다)
+ * - 회의록 AI 정리 (PC가 있으면 PC로, 없으면 이 기기에 넣은 키로)
+ * - 사진 → 지적사항 초안 (공종·위치·지적 내용·조치 요구·안전 위반)
+ * - 말로 업무일지: 말 → 글 → 인원·장비·자재·작업 칸 → 현장 PC 업무일지에 넣기 (PC에 닿지 않으면 닿을 때 넣기)
+ * - AI 묻기: 현장 PC에 연결한 시방서·도면·회의 자료와 현장 기록에서 찾아 근거(문서·쪽)와 함께 답한다 */
+(function () {
+  'use strict';
+  const App = window.App;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const esc = App.esc;
+  const ON = window.MYCM_TARGET === 'apk' || window.MYCM_TARGET === 'pwa';
+  const VIEWABLE = ['pdf', 'hwp', 'hwpx', 'dwg', 'dxf'];
+
+  const MSG = {
+    not_paired: 'AI는 현장 PC를 거쳐 씁니다. 먼저 사람 단추 › PC 연동을 켜 주세요.',
+    revoked: '현장 PC에서 이 기기의 연결을 끊었습니다. 홈의 [QR로 다시 연결]을 눌러 주세요.',
+    offline: '인터넷(와이파이·LTE)이 연결되지 않았습니다.',
+    pc_down: '현장 PC에 닿지 않습니다. 현장 PC가 켜져 있고 인터넷에 연결되어 있는지 확인해 주세요.',
+    timeout: '현장 PC가 너무 오래 답하지 않습니다. 잠시 뒤 다시 해 주세요.',
+    old_pc: '현장 PC 프로그램이 옛 판이라 AI가 없습니다. 현장 PC에 MYCM-ON 현장 PC 2.2.0 이상을 깔아 주세요.',
+    not_configured: '현장 PC에 AI 키가 없습니다. 현장 PC › 연결·설정 › AI에서 회사 키를 넣어 주세요.',
+    devices_off: '현장 PC에서 기기의 AI 사용을 꺼 두었습니다. 현장 PC › 연결·설정 › AI에서 켤 수 있습니다.',
+    limit: '이번 달 AI 사용 한도를 다 썼습니다. 현장 PC › 연결·설정 › AI에서 한도를 올릴 수 있습니다.',
+    rate_limited: 'AI 요청이 몰려 잠시 막혔습니다. 1분쯤 뒤에 다시 해 주세요.',
+    bad_key: '현장 PC의 AI 키가 맞지 않습니다. 현장 PC에서 키를 확인해 주세요.',
+    upstream_error: 'AI 서버가 답하지 않습니다. 잠시 뒤 다시 해 주세요.',
+    cancelled: '멈췄습니다.',
+    no_stt: '이 기기에서는 말을 글로 바꿀 수 없습니다. 키보드의 마이크(받아쓰기)로 말하거나 직접 적어 주세요.',
+    no_site: '현장을 먼저 정해 주세요. 홈 위쪽의 현장 단추를 누르면 됩니다.'
+  };
+  const fail = (code, message) => ({ code, message: message || MSG[code] || '' });
+  function msgOf(e) {
+    if (!e) return '알 수 없는 오류가 났습니다.';
+    if (typeof e === 'string') return e;
+    return e.message || MSG[e.code] || ('AI를 쓰지 못했습니다 (' + (e.code || e.name || '오류') + ')');
+  }
+
+  // ---------------- 현장 PC에 부탁 ----------------
+  const pcState = () => (App.sync ? App.sync.ai : 'none');   // none · unknown · on · off · old
+  const paired = () => !!(ON && App.sync && App.sync.configured);
+  async function pc(path, opt) {
+    opt = Object.assign({ timeout: 95000 }, opt || {});
+    const sy = App.sync;
+    if (!sy || !sy.configured) throw fail(sy && sy.revoked ? 'revoked' : 'not_paired');
+    if (navigator.onLine === false) throw fail('offline');
+    if (!await sy.ensure()) throw fail(sy.revoked ? 'revoked' : 'pc_down');
+    const t0 = Date.now();
+    let r;
+    try { r = await sy.call(path, opt); }
+    catch (e) {
+      if (opt.signal && opt.signal.aborted) throw fail('cancelled');
+      if (e && e.name === 'AbortError') throw fail('timeout');
+      // 금방 끊겼으면 길이 바뀐 것(사무실 ↔ 인터넷): 다시 찾아 한 번 더
+      if (Date.now() - t0 > 8000) throw fail('pc_down');
+      sy.forget();
+      if (!await sy.ensure(true)) throw fail(sy.revoked ? 'revoked' : 'pc_down');
+      try { r = await sy.call(path, opt); }
+      catch (e2) { throw fail(opt.signal && opt.signal.aborted ? 'cancelled' : 'pc_down'); }
+    }
+    if (r.status === 401) { sy.kick(0); throw fail('revoked'); }
+    if (r.status === 404 && !r.j.code && !r.j.error) throw fail('old_pc');
+    if (!r.ok) throw fail(r.j.code || 'upstream_error', r.j.error);
+    return opt.blob ? r.blob : r.j;
+  }
+  function parseJSON(text) {
+    const m = String(text || '').match(/\{[\s\S]*\}/);
+    if (!m) throw { code: 'invalid_json', text };
+    try { return JSON.parse(m[0]); } catch (e) { throw { code: 'invalid_json', text }; }
+  }
+
+  // 회의록 AI 정리: 현장 PC로, PC에 닿지 않거나 PC에 AI가 없으면 이 기기에 넣은 키로
+  function sampler(local) {
+    const FALLBACK = ['pc_down', 'offline', 'not_configured', 'devices_off', 'old_pc', 'revoked', 'not_paired', 'limit', 'timeout'];
+    return {
+      async json(prompt, opts) {
+        try {
+          const j = await pc('/api/t/ai', { method: 'POST', json: { kind: 'minutes', maxTokens: 4096, messages: [{ role: 'user', content: prompt }] }, signal: opts && opts.signal });
+          return parseJSON(j.text);
+        } catch (e) {
+          if (local && FALLBACK.includes(e && e.code)) return local.json(prompt, opts);
+          throw e;
+        }
+      }
+    };
+  }
+  // App.use('sample')가 고르는 것: PC에 AI가 있거나 아직 모르면 PC, PC에 없고 이 기기 키가 있으면 이 기기
+  function pickSampler(local) {
+    const st = pcState();
+    if (!paired() || st === 'old') return local;
+    if (st === 'off' && local) return local;
+    return sampler(local);
+  }
+
+  // ---------------- 말 → 글 ----------------
+  const canRec = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder);
+  const pickMime = () => ['audio/mp4;codecs=mp4a.40.2', 'audio/mp4', 'audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus']
+    .find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+  const extOfMime = (m) => /mp4|aac|m4a/.test(m || '') ? 'm4a' : /ogg/.test(m || '') ? 'ogg' : 'webm';
+  const terms = () => (App.store.get('sttTerms', '') || window.MYCM_TERMS || '');
+  let nativeStt = null;
+  async function hasNativeStt() {
+    if (nativeStt !== null) return nativeStt;
+    const N = window.MYCM_NATIVE;
+    nativeStt = !!(N && N.stt && await N.stt.info().catch(() => null));
+    return nativeStt;
+  }
+  async function canStt() { return (await hasNativeStt()) || paired(); }
+  // 녹음 → 글: 이 기기의 음성 인식(설치형 앱, 인터넷 없이) → 없으면 현장 PC의 음성 인식
+  async function toText(blob, ext) {
+    if (await hasNativeStt()) {
+      const r = await window.MYCM_NATIVE.stt.transcribe(blob, ext, () => {}, null, terms());
+      return ((r && r.segments) || []).map(s => s.text).join(' ').replace(/\s+/g, ' ').trim();
+    }
+    if (paired()) {
+      const j = await pc('/api/t/stt/quick?ext=' + ext, { method: 'POST', body: blob, headers: { 'Content-Type': 'application/octet-stream' }, timeout: 120000 });
+      return String(j.text || '').trim();
+    }
+    throw fail('no_stt');
+  }
+  const MIC = '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/></svg>';
+  const STOP = '<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+
+  // 말하거나 적은 글을 돌려준다 (취소하면 null). 녹음 단추를 누르는 동안 말하고, 다시 누르면 글로 바뀌어 아래 칸에 들어간다
+  async function listen(o) {
+    o = o || {};
+    const stt = canRec() && await canStt();
+    let rec = null, stream = null, chunks = [], t0 = 0, timer = 0, raf = 0, ac = null, working = false, closeFn = null, closeAfter = false;
+    const stopMedia = () => {
+      clearInterval(timer); cancelAnimationFrame(raf);
+      try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) { /* 무시 */ }
+      if (stream) stream.getTracks().forEach(t => t.stop());
+      if (ac) ac.close().catch(() => {});
+      stream = null; ac = null;
+      if (window.MYCM_NATIVE) window.MYCM_NATIVE.keepAwake(false);
+    };
+    const v = await App.sheet({
+      title: o.title || '말로 쓰기',
+      wide: true,
+      focus: false,
+      body: `<div class="vo">
+        ${o.hint ? `<p class="vo-hint">${esc(o.hint)}</p>` : ''}
+        ${stt ? `<button class="vo-mic" type="button" id="vo-mic"><span class="ring" id="vo-ring">${MIC}</span><span class="vo-tx"><b id="vo-t">눌러서 말하기</b><span id="vo-s">다 말하면 한 번 더 누르세요 · 3분까지</span></span><span class="vo-meter"><i id="vo-lv"></i></span></button>`
+          : `<p class="vo-hint" style="color:var(--muted)">${esc(canRec() ? MSG.no_stt : '이 기기에서는 녹음을 쓸 수 없습니다. 키보드의 마이크(받아쓰기)로 말하거나 직접 적어 주세요.')}</p>`}
+        <label class="lbl">${stt ? '알아들은 말 (고칠 수 있습니다)' : '내용'}<textarea class="field" id="vo-text" rows="5" placeholder="${stt ? '말한 내용이 여기에 들어옵니다. 직접 적어도 됩니다.' : '여기에 적어 주세요.'}">${esc(o.initial || '')}</textarea></label>
+      </div>`,
+      actions: [{ label: '취소', value: null }, {
+        label: o.ok || '이대로 쓰기', kind: 'primary',
+        check: (b) => {
+          if (working) return false;
+          if (rec && rec.state === 'recording') { closeAfter = true; $('#vo-mic', b).click(); return false; }
+          return true;
+        },
+        value: (b) => $('#vo-text', b).value.trim() || null
+      }],
+      onMount(b, close) {
+        closeFn = close;
+        const mic = $('#vo-mic', b); if (!mic) { setTimeout(() => $('#vo-text', b).focus(), 60); return; }
+        const ta = $('#vo-text', b), okBtn = b.closest('.sheet').querySelector('.sheet-f .primary');
+        const setUi = (mode, sub) => {
+          mic.dataset.mode = mode;
+          $('#vo-ring', b).innerHTML = mode === 'rec' ? STOP : MIC;
+          $('#vo-t', b).textContent = mode === 'rec' ? '0:00 · 듣는 중' : mode === 'busy' ? '글로 바꾸는 중…' : '눌러서 말하기';
+          $('#vo-s', b).textContent = sub || (mode === 'rec' ? '다 말하면 한 번 더 누르세요' : '다시 누르면 이어서 말할 수 있습니다');
+          mic.disabled = mode === 'busy';
+          okBtn.disabled = mode === 'busy';
+        };
+        const start = async () => {
+          try { stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); }
+          catch (e) { setUi('idle', '마이크를 쓸 수 없습니다. 앱의 마이크 권한을 허용해 주세요.'); return; }
+          const mime = pickMime();
+          try { rec = new MediaRecorder(stream, mime ? { mimeType: mime, audioBitsPerSecond: 64000 } : undefined); }
+          catch (e) { stopMedia(); setUi('idle', '녹음을 시작하지 못했습니다.'); return; }
+          chunks = [];
+          rec.ondataavailable = (e) => { if (e.data && e.data.size) chunks.push(e.data); };
+          rec.start(1000);
+          t0 = Date.now();
+          if (window.MYCM_NATIVE) window.MYCM_NATIVE.keepAwake(true);
+          setUi('rec');
+          timer = setInterval(() => {
+            const s = Math.round((Date.now() - t0) / 1000);
+            $('#vo-t', b).textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')} · 듣는 중`;
+            if (s >= 180) mic.click();
+          }, 300);
+          try {
+            ac = new (window.AudioContext || window.webkitAudioContext)();
+            const an = ac.createAnalyser(); an.fftSize = 512; ac.createMediaStreamSource(stream).connect(an);
+            const buf = new Uint8Array(an.fftSize);
+            const loop = () => { an.getByteTimeDomainData(buf); let m = 0; for (const x of buf) m = Math.max(m, Math.abs(x - 128)); const lv = $('#vo-lv', b); if (lv) lv.style.width = Math.min(100, m / 1.1) + '%'; raf = requestAnimationFrame(loop); };
+            loop();
+          } catch (e) { /* 소리 크기 표시 없이 */ }
+        };
+        const finish = async () => {
+          working = true;
+          setUi('busy', '');
+          await new Promise(res => { rec.onstop = res; stopMedia(); });
+          const lv = $('#vo-lv', b); if (lv) lv.style.width = '0%';
+          const type = rec.mimeType || 'audio/webm';
+          const blob = new Blob(chunks, { type });
+          rec = null;
+          try {
+            const text = blob.size ? await toText(blob, extOfMime(type)) : '';
+            if (text) { ta.value = (ta.value.trim() ? ta.value.trim() + ' ' : '') + text; setUi('idle'); }
+            else setUi('idle', '알아들은 말이 없습니다. 조금 더 가까이에서 또박또박 말해 주세요.');
+          } catch (e) { setUi('idle', '글로 바꾸지 못했습니다: ' + msgOf(e)); closeAfter = false; }
+          working = false;
+          if (closeAfter) { closeAfter = false; if (ta.value.trim()) closeFn(ta.value.trim()); }
+        };
+        mic.addEventListener('click', () => { if (working) return; if (rec && rec.state === 'recording') finish(); else start(); });
+        if (o.auto !== false) start();
+      },
+      onClose() { stopMedia(); }
+    });
+    stopMedia();
+    return typeof v === 'string' ? v : null;
+  }
+
+  // ---------------- 사진 → 지적사항 초안 ----------------
+  async function shrinkB64(blob, maxSide) {
+    let src;
+    try { src = await createImageBitmap(blob); }
+    catch (e) { src = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error('사진을 읽지 못했습니다')); im.src = URL.createObjectURL(blob); }); }
+    const k = Math.min(1, maxSide / Math.max(src.width, src.height));
+    const cv = document.createElement('canvas');
+    cv.width = Math.max(1, Math.round(src.width * k)); cv.height = Math.max(1, Math.round(src.height * k));
+    const ctx = cv.getContext('2d'); ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, cv.width, cv.height); ctx.drawImage(src, 0, 0, cv.width, cv.height);
+    if (src.close) src.close();
+    const url = cv.toDataURL('image/jpeg', 0.85);
+    cv.width = 0;
+    return url.slice(url.indexOf(',') + 1);
+  }
+  function recentPlaces() {
+    const seen = new Set(), out = [];
+    for (const p of App.photos.filter(App.inSite).sort((a, b) => b.takenAt - a.takenAt)) {
+      const s = [p.dong, p.floor, p.part].filter(Boolean).join(' ');
+      if (s && !seen.has(s)) { seen.add(s); out.push(s); }
+      if (out.length >= 15) break;
+    }
+    return out;
+  }
+  async function photoDraft(p) {
+    const blob = await App.DB.get('blobs', 'ph:' + p.id + ':full');
+    if (!blob) throw { message: '이 기기에서 사진 원본을 찾지 못했습니다.' };
+    const image = await shrinkB64(blob, 1568);
+    return pc('/api/t/ai/photo', { method: 'POST', json: { image, note: p.memo || '', site: App.siteLabel(), known: { trade: p.trade || '', dong: p.dong || '', floor: p.floor || '', part: p.part || '' }, recent: recentPlaces() }, timeout: 95000 });
+  }
+  function photoCard(r) {
+    return `<div class="ai-card"><div class="h"><span class="spark">${SPARK}</span><b>${esc(r.title || '')}</b>${r.is_issue ? `<i class="tag red">${esc(r.severity || '지적')}</i>` : '<i class="tag ok">양호</i>'}</div>
+      <div class="b">${esc(r.finding || '')}${r.is_issue && r.action ? `<br><b>조치 요구:</b> ${esc(r.action)}` : ''}</div>
+      ${(r.safety || []).length ? `<div class="chips">${r.safety.map(x => `<span class="tag warn">${esc(x)}</span>`).join('')}</div>` : ''}
+      <div class="f"><span class="meta">${esc([r.trade, r.dong, r.floor, r.part].filter(Boolean).join(' · '))}${r.confidence ? ` · 확신 ${esc(r.confidence)}` : ''}</span><span class="grow"></span><button class="btn sm" type="button" data-aino>안 넣기</button><button class="btn sm primary" type="button" data-aiyes>넣기</button></div></div>`;
+  }
+
+  // ---------------- 말로 업무일지 ----------------
+  const today = () => { const d = new Date(); return `${d.getFullYear()}-${App.pad2(d.getMonth() + 1)}-${App.pad2(d.getDate())}`; };
+  function patchHtml(p) {
+    const n = (v) => { const x = parseFloat(v); return isFinite(x) ? x : 0; };
+    const rows = [];
+    if (p.weather_sky) rows.push(['날씨', esc(p.weather_sky)]);
+    if ((p.manpower || []).length) rows.push(['인원', p.manpower.map(m => `${esc(m.trade)}${m.company ? `(${esc(m.company)})` : ''} <b>${n(m.count)}명</b>`).join(' · ')]);
+    if ((p.equipment || []).length) rows.push(['장비', p.equipment.map(e => `${esc(e.name)}${e.spec ? ' ' + esc(e.spec) : ''} <b>${n(e.count)}대</b>`).join(' · ')]);
+    if ((p.materials || []).length) rows.push(['자재', p.materials.map(m => `${esc(m.name)}${m.spec ? ' ' + esc(m.spec) : ''} <b>${esc(m.qty)}${esc(m.unit)}</b>`).join(' · ')]);
+    for (const [k, nm] of [['work', '금일 작업'], ['plan', '명일 계획'], ['safety', '안전'], ['notes', '특이 사항']]) if ((p[k] || []).length) rows.push([nm, p[k].map(x => '- ' + esc(x)).join('<br>')]);
+    return rows.length ? `<table class="kvt">${rows.map(r => `<tr><th>${r[0]}</th><td>${r[1]}</td></tr>`).join('')}</table>` : '<p class="meta">알아들은 업무일지 내용이 없습니다. 인원·장비·작업을 넣어 다시 말해 주세요.</p>';
+  }
+  const PENDING = 'ai.pendingDaily';
+  async function voiceDaily() {
+    if (!paired()) { notReady(); return; }
+    if (pcState() === 'old') { App.toast(MSG.old_pc, true, 9000); return; }
+    const site = App.siteLabel();
+    if (!site) { App.toast(MSG.no_site, true); return; }
+    const date = today();
+    const text = await listen({ title: '말로 업무일지', ok: '업무일지로 나누기', hint: '예: "오늘 형틀 열두 명, 철근 여덟 명. 타워크레인 한 대, 펌프카 한 대. 101동 3층 슬래브 배근 검측했고 레미콘 120루베 들어옴. 내일은 3층 슬래브 타설 예정."' });
+    if (!text) return;
+    App.busy(true, 'AI가 업무일지 칸으로 나누는 중', 0.4, site);
+    let p;
+    try { p = await pc('/api/t/ai/daily', { method: 'POST', json: { site, date, text } }); }
+    catch (e) {
+      App.busy(false);
+      if (['pc_down', 'offline', 'timeout'].includes(e.code)) {
+        const ok = await App.confirm('현장 PC에 닿지 않습니다', `${msgOf(e)}\n말한 내용은 이 기기에 남겨 두었다가, 현장 PC에 닿으면 AI로 나눠 ${date} 업무일지에 넣을까요?`, '닿으면 넣기');
+        if (ok) { const l = App.store.get(PENDING, []); l.push({ site, date, text, at: Date.now() }); App.store.set(PENDING, l); App.toast('남겨 두었습니다. 현장 PC에 닿으면 업무일지에 넣고 알려 드립니다.'); }
+        return;
+      }
+      App.toast(msgOf(e), true, 9000);
+      return;
+    }
+    App.busy(false);
+    const v = await App.sheet({
+      title: `업무일지에 넣을 내용 · ${App.pad2(+date.slice(5, 7))}월 ${App.pad2(+date.slice(8))}일`,
+      wide: true,
+      body: `<p class="meta" style="margin:0">말한 것: ${esc(text)}</p>${patchHtml(p)}<p class="meta" style="margin:0">현장 PC의 ${esc(site)} 업무일지에 넣습니다. 인원·장비는 같은 공종·장비의 숫자를 바꾸고, 글은 뒤에 붙입니다.</p>`,
+      actions: [{ label: '취소', value: null }, { label: '다시 말하기', value: 'again' }, { label: '업무일지에 넣기', kind: 'primary', value: 'ok' }]
+    });
+    if (v === 'again') { voiceDaily(); return; }
+    if (v !== 'ok') return;
+    try {
+      const r = await pc('/api/t/daily/merge', { method: 'POST', json: { site, date, patch: p } });
+      const ch = r.changes || [];
+      App.toast(ch.length ? `현장 PC 업무일지에 넣었습니다 · ${ch.slice(0, 4).join(', ')}${ch.length > 4 ? ' …' : ''}` : '업무일지에 이미 같은 내용이 있습니다.', false, 6000);
+    } catch (e) { App.toast(msgOf(e), true, 9000); }
+  }
+  let pendingRun = false;
+  async function runPending() {
+    const l = App.store.get(PENDING, []);
+    if (!l.length || pendingRun || !paired() || navigator.onLine === false || pcState() === 'old') return;
+    pendingRun = true;
+    try {
+      const left = [];
+      let done = 0;
+      for (const x of l) {
+        try {
+          const p = await pc('/api/t/ai/daily', { method: 'POST', json: x });
+          await pc('/api/t/daily/merge', { method: 'POST', json: { site: x.site, date: x.date, patch: p } });
+          done++;
+        } catch (e) {
+          if (['pc_down', 'offline', 'timeout', 'rate_limited', 'revoked'].includes(e.code)) left.push(x);
+          else App.toast(`말로 남긴 업무일지를 넣지 못했습니다: ${msgOf(e)}`, true, 9000);
+        }
+      }
+      App.store.set(PENDING, left);
+      if (done) App.toast(`말로 남겨 둔 업무일지 ${done}건을 현장 PC 업무일지에 넣었습니다.`, false, 6000);
+    } finally { pendingRun = false; }
+  }
+
+  // ---------------- AI 묻기 ----------------
+  const SPARK = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z"/></svg>';
+  const A = { thread: App.store.get('ask.thread', []), polls: {}, ctl: {} };
+  const EX = ['슬래브 거푸집은 언제 떼도 되나?', '외부 비계 작업발판 기준', '미조치 지적사항 정리해 줘', '최신 평면도 찾아 줘', '레미콘 관련 회의 결정 사항'];
+  const saveThread = () => App.store.set('ask.thread', A.thread.slice(-10).map(t => Object.assign({}, t, { steps: (t.steps || []).slice(-4) })));
+  function hlTerm(question, cited) {
+    const c = String(cited || '').replace(/\s+/g, '');
+    const words = String(question || '').split(/[\s?.,!·]+/).map(w => w.replace(/(이었지|였지|이야|에서|으로|은|는|이|가|을|를|의|에|로|과|와|도|만)$/, '')).filter(w => w.length >= 2);
+    for (let n = Math.min(4, words.length); n >= 1; n--) {
+      for (let i = 0; i + n <= words.length; i++) { const ph = words.slice(i, i + n).join(' '); if (c.includes(ph.replace(/\s+/g, ''))) return ph; }
+    }
+    return String(cited || '').split('\n')[0].trim().slice(0, 40);
+  }
+  const badge = (ext) => { const e = String(ext || '').replace('.', '').toLowerCase(); return `<span class="badge ${esc(e)}">${esc(e.toUpperCase())}</span>`; };
+  function answerHtml(t, i) {
+    if (t.status === 'run') {
+      const st = (t.steps || []).slice(-3);
+      return `<div class="ans run"><span class="spin"></span><span class="asteps">${st.map((s, k) => `<span class="${k === st.length - 1 ? 'now' : ''}">${esc(s)}</span>`).join('') || '<span class="now">묻는 내용 살펴보는 중</span>'}</span><button class="btn sm" type="button" data-acancel="${i}">멈추기</button></div>`;
+    }
+    if (t.status === 'fail' || t.status === 'cancel') return `<div class="ans fail"><span>${esc(t.err || (t.status === 'cancel' ? '멈췄습니다' : '답하지 못했습니다'))}</span><button class="btn sm" type="button" data-aretry="${i}">다시 묻기</button></div>`;
+    const a = t.answer || {};
+    const src = a.sources || [];
+    const body = (a.blocks && a.blocks.length ? a.blocks : [{ text: a.text || '' }]).map(b => esc(b.text) + (b.cites || []).map(k => `<button class="cite" type="button" data-cite="${i}:${k}">${k + 1}</button>`).join('')).join('');
+    const files = (a.files || []).slice(0, 8);
+    const recs = a.records || [];
+    return `<div class="ans">
+      <div class="atext">${body.replace(/\n/g, '<br>')}</div>
+      ${src.length ? `<div class="srcs"><div class="h">근거 ${src.length}</div>${src.map((s, k) => `<div class="src" id="asrc-${i}-${k}"><span class="n">${k + 1}</span>${badge(s.ext)}<span class="nm"><b>${esc(s.name || '문서')} · ${esc(s.label || '')}</b><span class="cq">${esc(String(s.cited || '').replace(/\s+/g, ' ').trim())}</span><span class="w">${esc(s.folder || '')}</span></span>${VIEWABLE.includes(String(s.ext || '').replace('.', '').toLowerCase()) ? `<button class="btn sm" type="button" data-aopen="${i}:${k}">그 쪽 열기</button>` : ''}</div>`).join('')}</div>` : ''}
+      ${files.length ? `<div class="srcs"><div class="h">찾은 파일 ${(a.files || []).length}</div>${files.map((f, k) => `<div class="src file">${badge(f.ext)}<span class="nm"><b>${esc(f.name)}</b><span class="w">${esc([f.where, f.date].filter(Boolean).join(' · '))}</span></span>${VIEWABLE.includes(String(f.ext || '').replace('.', '').toLowerCase()) ? `<button class="btn sm" type="button" data-afile="${i}:${k}">받아서 보기</button>` : ''}</div>`).join('')}</div>` : ''}
+      ${recs.length ? `<details class="recs"><summary>살펴본 현장 기록 ${recs.length}건</summary><div>${recs.slice(0, 30).map(recRow).join('')}</div></details>` : ''}
+      <div class="afoot">AI 답은 틀릴 수 있습니다. 근거 문서를 열어 확인해 주세요.</div>
+    </div>`;
+  }
+  function recRow(r) {
+    const t = r._type;
+    const line = (b, s) => `<div class="rrow"><b>${esc(b)}</b><span>${esc(s)}</span></div>`;
+    if (t === 'issues') return line(`#${r.no} ${r.title}`, [r.location, r.status, r.owner, r.due].filter(Boolean).join(' · '));
+    if (t === 'todos') return line(r.text, [r.status, r.owner, r.due].filter(Boolean).join(' · '));
+    if (t === 'dailies') return line('업무일지 ' + r.date, String(r.work || '').split('\n')[0]);
+    if (t === 'meetings') return line(r.title, r.date);
+    if (t === 'photos') return line([r.dong, r.floor, r.part].filter(Boolean).join(' ') || '사진', [r.taken, r.trade, r.memo].filter(Boolean).join(' · '));
+    return '';
+  }
+  function renderAsk() {
+    if (App.view !== 'ask') return;
+    $('#ask-sub').textContent = (App.site ? App.site.name + ' · ' : '') + '현장 PC에 연결한 문서와 현장 기록에서 찾아 근거와 함께 답합니다';
+    const box = $('#ask-thread');
+    const st = pcState();
+    let note = '';
+    if (!paired()) note = `<div class="ask-note"><b>현장 PC 연동이 필요합니다</b><span>AI 묻기는 현장 PC에 연결한 시방서·도면·회의 자료와 지적사항·업무일지에서 찾습니다. ${App.sync && App.sync.revoked ? '현장 PC에서 이 기기의 연결을 끊었습니다.' : '사람 단추 › PC 연동에서 현장 PC에 연결해 주세요.'}</span><button class="btn primary" type="button" data-apair>${App.sync && App.sync.revoked ? 'QR로 다시 연결' : 'PC 연동 켜기'}</button></div>`;
+    else if (st === 'old') note = `<div class="ask-note"><b>현장 PC 프로그램을 새 판으로</b><span>${esc(MSG.old_pc)}</span></div>`;
+    else if (st === 'off') note = `<div class="ask-note"><b>현장 PC에서 AI를 켜 주세요</b><span>현장 PC › 연결·설정 › AI에서 회사 키를 넣고 '기기·휴대폰도 쓰기'를 켜면 여기서 물을 수 있습니다.</span></div>`;
+    if (!A.thread.length) {
+      box.innerHTML = note + `<div class="ask-empty"><span class="spark">${SPARK}</span><b>무엇이든 물어보세요</b><span>시방서·도면·계약서·회의 자료와 지적사항·업무일지·회의록에서 찾아, 어느 문서 몇 쪽인지 근거와 함께 답합니다.</span><div class="chips">${EX.map(x => `<button class="chip" type="button" data-aex="${esc(x)}">${esc(x)}</button>`).join('')}</div></div>`;
+    } else {
+      box.innerHTML = note + A.thread.map((t, i) => `<div class="turn"><div class="qb"><span>${esc(t.q)}</span></div>${answerHtml(t, i)}</div>`).join('');
+    }
+    $('#ask-new').hidden = !A.thread.length;
+  }
+  async function ask(q) {
+    q = String(q || '').trim(); if (!q) return;
+    if (!paired()) { notReady(); return; }
+    const history = A.thread.filter(t => t.status === 'done' && t.answer).slice(-3).map(t => ({ q: t.q, a: String(t.answer.text || '').slice(0, 3000) }));
+    const t = { q, status: 'run', steps: [], at: Date.now() };
+    A.thread.push(t); saveThread();
+    $('#ask-in').value = ''; autoGrow();
+    renderAsk(); scrollEnd();
+    try {
+      const j = await pc('/api/t/ask', { method: 'POST', json: { q, site: App.siteLabel(), history }, timeout: 30000 });
+      t.id = j.id; saveThread();
+      poll(t);
+    } catch (e) { t.status = 'fail'; t.err = msgOf(e); saveThread(); renderAsk(); }
+  }
+  async function poll(t) {
+    if (!t.id || A.polls[t.id]) return;
+    A.polls[t.id] = true;
+    const until = Date.now() + 240e3;
+    try {
+      while (t.status === 'run') {
+        await new Promise(r => setTimeout(r, 1500));
+        let j;
+        try { j = await pc('/api/t/ask/' + encodeURIComponent(t.id), { timeout: 20000 }); }
+        catch (e) {
+          if (e.code === 'upstream_error' || e.code === 'revoked' || Date.now() > until) { t.status = 'fail'; t.err = msgOf(e); break; }
+          continue;   // 잠깐 끊김: 계속 기다린다
+        }
+        t.steps = j.steps || t.steps;
+        if (j.status !== 'run') { t.status = j.status === 'done' ? 'done' : j.status; t.answer = j.answer; t.err = j.error; }
+        if (App.view === 'ask') { renderAsk(); if (t.status !== 'run') scrollEnd(); }
+      }
+    } finally { delete A.polls[t.id]; saveThread(); renderAsk(); }
+  }
+  const scrollEnd = () => { const m = $('#ask-main'); if (m) requestAnimationFrame(() => { m.scrollTop = m.scrollHeight; }); };
+  function autoGrow() { const ta = $('#ask-in'); if (!ta) return; ta.style.height = 'auto'; ta.style.height = Math.min(160, ta.scrollHeight + 2) + 'px'; }
+
+  // 근거 문서를 현장 PC에서 받아 그 쪽을 연다 (이번에 받은 것은 다시 받지 않는다)
+  const gotDocs = new Map();
+  async function openRemote(f, page, q) {
+    const ext = String(f.ext || '').replace('.', '').toLowerCase();
+    if (!VIEWABLE.includes(ext)) { App.toast('이 파일은 이 기기에서 열 수 없습니다. 현장 PC에서 열어 주세요.'); return; }
+    let bytes = null;
+    const had = gotDocs.get(f.fileId);
+    if (had) { const b = await App.DB.get('blobs', 'f:' + had).catch(() => null); if (b) bytes = new Uint8Array(await b.arrayBuffer()); }
+    if (!bytes) {
+      App.busy(true, '현장 PC에서 문서 받는 중', 0.25, f.name);
+      try { const blob = await pc('/api/t/doc/' + encodeURIComponent(f.fileId), { blob: true, timeout: 300000 }); bytes = new Uint8Array(await blob.arrayBuffer()); }
+      catch (e) { App.busy(false); App.toast('문서를 받지 못했습니다: ' + msgOf(e), true, 8000); return; }
+    }
+    await App.openBytes(bytes, f.name);
+    const rec = App.files.find(x => x.transient && x.name === f.name && x.size === bytes.length);
+    if (rec) gotDocs.set(f.fileId, rec.sha);
+    if (page && ['pdf', 'hwp', 'hwpx'].includes(ext) && App.views.doc && App.views.doc.jump) {
+      try { await App.views.doc.jump({ page, q }); } catch (e) { /* 그 쪽만 못 찾음 */ }
+    }
+  }
+
+  function notReady() {
+    if (App.sync && App.sync.revoked) { App.confirm('현장 PC 연결이 끊겼습니다', MSG.revoked.replace("홈의 [QR로 다시 연결]을 눌러 주세요.", '현장 PC 화면의 QR을 다시 찍으면 바로 이어집니다.'), 'QR로 다시 연결').then(ok => { if (ok) App.sync.repair(); }); return; }
+    App.confirm('현장 PC 연동이 필요합니다', 'AI는 현장 PC에 넣은 회사 AI 키로 씁니다. 이 기기를 현장 PC에 연결하면 사진 지적사항 초안, 말로 업무일지, AI 묻기를 쓸 수 있습니다.', 'PC 연동 켜기').then(ok => { if (ok && App.sync) App.sync.open(); });
+  }
+
+  // ---------------- 홈 단추 ----------------
+  function renderHomeAI() {
+    const row = $('#home-ai'); if (!row) return;
+    row.hidden = !(ON && App.sync && (App.sync.configured || App.sync.revoked));
+    const st = pcState();
+    const n = App.store.get(PENDING, []).length;
+    $('#q-voice-s').textContent = n ? `PC에 넣을 것 ${n}건` : (st === 'off' ? '현장 PC에서 AI 꺼짐' : st === 'old' ? '현장 PC 새 판 필요' : '말하면 인원·장비·작업 칸으로');
+    $('#q-ask-s').textContent = st === 'off' ? '현장 PC에서 AI 꺼짐' : st === 'old' ? '현장 PC 새 판 필요' : '시방서·도면에서 근거와 함께';
+  }
+
+  function init() {
+    if (!ON) return;
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('#q-voice')) { voiceDaily(); return; }
+      if (e.target.closest('#q-ask')) { App.go('ask'); return; }
+    });
+    window.addEventListener('mycm:ai', () => { renderHomeAI(); if (App.view === 'ask') renderAsk(); if (App.onAiChange) App.onAiChange(); runPending(); });
+    window.addEventListener('online', () => setTimeout(runPending, 4000));
+    setInterval(runPending, 120e3);
+    setTimeout(runPending, 15000);
+    const v = $('#v-ask');
+    v.addEventListener('click', async (e) => {
+      const t = e.target;
+      const ex = t.closest('[data-aex]'); if (ex) { ask(ex.dataset.aex); return; }
+      if (t.closest('[data-apair]')) { if (App.sync.revoked) App.sync.repair(); else App.sync.open(); return; }
+      if (t.closest('#ask-new')) { A.thread = []; saveThread(); renderAsk(); return; }
+      if (t.closest('#ask-mic')) { const s = await listen({ title: '말로 묻기', ok: '묻기', hint: '물어볼 것을 말해 주세요. 예: "삼층 슬래브 거푸집 언제 떼도 돼?"' }); if (s) ask(s); return; }
+      const c = t.closest('[data-cite]');
+      if (c) { const [i, k] = c.dataset.cite.split(':'); const s = $(`#asrc-${i}-${k}`); if (s) { s.scrollIntoView({ block: 'center', behavior: 'smooth' }); s.classList.add('flash'); setTimeout(() => s.classList.remove('flash'), 1400); } return; }
+      const o = t.closest('[data-aopen]');
+      if (o) { const [i, k] = o.dataset.aopen.split(':'); const th = A.thread[+i]; const s = th && th.answer && th.answer.sources[+k]; if (s) openRemote(s, s.page, hlTerm(th.q, s.cited)); return; }
+      const fo = t.closest('[data-afile]');
+      if (fo) { const [i, k] = fo.dataset.afile.split(':'); const f = A.thread[+i].answer.files[+k]; if (f) openRemote({ fileId: f.id, name: f.name, ext: f.ext }, 0, ''); return; }
+      const cn = t.closest('[data-acancel]');
+      if (cn) { const th = A.thread[+cn.dataset.acancel]; if (th && th.id) pc('/api/t/ask/' + encodeURIComponent(th.id) + '/cancel', { method: 'POST', json: {}, timeout: 10000 }).catch(() => {}); return; }
+      const rt = t.closest('[data-aretry]'); if (rt) { const x = A.thread.splice(+rt.dataset.aretry, 1)[0]; saveThread(); ask(x.q); }
+    });
+    $('#ask-form').addEventListener('submit', (e) => { e.preventDefault(); ask($('#ask-in').value); });
+    $('#ask-in').addEventListener('input', autoGrow);
+    $('#ask-in').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && window.matchMedia('(min-width: 900px)').matches) { e.preventDefault(); ask(e.target.value); } });
+    renderHomeAI();
+  }
+
+  App.views.ask = {
+    show() { renderAsk(); scrollEnd(); for (const t of A.thread) if (t.status === 'run' && t.id) poll(t); if (paired()) App.sync.ensure().catch(() => {}); },
+    hide() {}
+  };
+  App.ai = { pc, msgOf, listen, sampler, pickSampler, photoDraft, photoCard, voiceDaily, ask, runPending, paired, state: pcState, renderHome: renderHomeAI, init, SPARK, MIC };
 })();
 
 
