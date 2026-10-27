@@ -1002,7 +1002,7 @@
 <div class="drop" id="drop" hidden>놓으면 자료함에 추가합니다</div>
 <button class="rec-pill" id="rec-pill" type="button" hidden><i class="dot" aria-hidden="true"></i>녹음 중 <span id="rec-pill-t" class="num">0:00</span><span class="go">회의록 보기</span></button>
 
-<script>window.MYCM_TARGET = 'pwa'; window.MYCM_VERSION = '2.6.1';</script>
+<script>window.MYCM_TARGET = 'pwa'; window.MYCM_VERSION = '2.6.2';</script>
 <script src="vendor/earcut.min.js"></script>
 <script src="vendor/pdf.min.js"></script>
 <script>
@@ -8549,6 +8549,8 @@ ${lines}`;
   const HTTPS_PAGE = location.protocol === 'https:';
   const blockedUrl = (u) => HTTPS_PAGE && /^http:/i.test(u || '');
   const CHUNK = 2 * 1048576;
+  const ONE_SHOT = 3 * 1048576;   // 이보다 작으면(사진 등) 한 번에, 크면 끊겨도 이어 올리게 2MB씩
+  const b64url = (t) => btoa(unescape(encodeURIComponent(t))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   const Lan = ON && window.Capacitor && window.Capacitor.registerPlugin ? window.Capacitor.registerPlugin('LanFind') : null;
   async function findPCs(scan, subnets) {
     if (!Lan) return { servers: [], wifi: true, none: true };
@@ -8569,16 +8571,19 @@ ${lines}`;
   // 현장 PC에 닿는 길 찾기: 방금 된 주소 → 사무실 주소 → 인터넷 주소 → (사무실에서 다시 찾기) → (알림 채널에서 새 인터넷 주소)
   async function connect() {
     const tried = new Set();
-    const tryOne = async (u, via) => {
+    const tryOne = async (u, via, to) => {
       u = normUrl(u); if (!u || tried.has(u) || blockedUrl(u)) return null; tried.add(u);
       if (S.cfg.tunnel && u === normUrl(S.cfg.tunnel)) via = 'net';
-      const p = await call('/api/t/ping?user=' + encodeURIComponent(App.userName || ''), { base: u, timeout: via === 'net' ? 12000 : 5000 }).catch(() => null);
+      const p = await call('/api/t/ping?user=' + encodeURIComponent(App.userName || ''), { base: u, timeout: to || (via === 'net' ? 12000 : 5000) }).catch(() => null);
       if (!p) return null;
       if (p.status === 401) return { revoked: true };
       if (!p.ok) return null;
       return { p, u, via };
     };
-    let hit = await tryOne(S.base, S.via) || await tryOne(S.cfg.url, 'lan') || await tryOne(S.cfg.tunnel, 'net');
+    let hit = null;
+    // 인터넷(터널)으로 붙어 있어도 사무실 와이파이에 들어오면 직접 연결이 훨씬 빠르다 → 1분에 한 번은 사무실 주소를 먼저 짧게 본다
+    if (S.via === 'net' && !HTTPS_PAGE && S.cfg.url && Date.now() - (S.lanTryAt || 0) > 60e3) { S.lanTryAt = Date.now(); hit = await tryOne(S.cfg.url, 'lan', 1500); }
+    hit = hit || await tryOne(S.base, S.via) || await tryOne(S.cfg.url, 'lan') || await tryOne(S.cfg.tunnel, 'net');
     if (!hit && await relocate()) hit = await tryOne(S.cfg.url, 'lan');
     if (!hit && await relayLookup()) hit = await tryOne(S.cfg.tunnel, 'net');
     return hit;
@@ -8725,6 +8730,7 @@ ${lines}`;
       if (opt.json !== undefined) headers['Content-Type'] = 'application/json';
       const r = await fetch((opt.base || S.base || S.cfg.url) + path, { method: opt.method || 'GET', headers, body: opt.json !== undefined ? JSON.stringify(opt.json) : opt.body, signal: ctl.signal, cache: 'no-store' });
       if (opt.blob && r.ok) return { status: r.status, ok: true, j: {}, blob: await r.blob() };
+      if (r.ok && (!opt.base || opt.base === S.base)) S.okAt = Date.now();
       let j = {}; try { j = await r.json(); } catch (e) { j = {}; }
       return { status: r.status, ok: r.ok, j };
     } finally { clearTimeout(t); }
@@ -8824,19 +8830,23 @@ ${lines}`;
     if (!navigator.onLine || !onWifiRule()) { S.reach = navigator.onLine ? 'wifi' : 'offline'; renderChip(); return; }
     S.running = true;
     try {
-      const hit = await connect();
+      // 20초 안에 주고받은 길이 있으면 다시 확인(ping)하지 않고 바로 올린다
+      const fresh = S.base && S.reach === 'ok' && Date.now() - (S.okAt || 0) < 20e3 && Date.now() - (S.pingAt || 0) < 300e3 && !(S.via === 'net' && !HTTPS_PAGE && Date.now() - (S.lanTryAt || 0) > 60e3);
+      const hit = fresh ? { u: S.base, via: S.via, p: null } : await connect();
       if (!hit) { S.reach = 'down'; S.base = ''; S.lastErr = '현장 PC에 닿지 않습니다. 현장 PC가 켜져 있고 인터넷에 연결되어 있는지 확인해 주세요. 연결되면 바로 올립니다'; throw new Error('down'); }
       if (hit.revoked) { revoked(); return; }
       S.base = hit.u; S.via = hit.via;
-      const pj = hit.p.j;
+      const pj = hit.p ? hit.p.j : {};
+      if (hit.p) { S.waitOK = !!pj.wait; S.pingAt = Date.now(); }
       let dirty = false;
       if (pj.name && pj.name !== S.cfg.name) { S.cfg.name = pj.name; dirty = true; }
       if (pj.tunnel && pj.tunnel !== S.cfg.tunnel) { S.cfg.tunnel = pj.tunnel; dirty = true; }
       if (pj.relay && pj.relay !== S.cfg.relay) { S.cfg.relay = pj.relay; S.cfg.relayBase = pj.relayBase || ''; dirty = true; }
       if (dirty) App.store.set('sync', S.cfg);
       S.reach = 'ok'; S.lastErr = '';
-      setAI(pj);
+      if (hit.p) setAI(pj);
       renderChip();
+      waitLoop();
       for (;;) {
         const all = await refresh();
         const next = all.filter(r => r.state === 'wait' || r.state === 'up').sort((a, b) => a.createdAt - b.createdAt)[0];
@@ -8853,7 +8863,8 @@ ${lines}`;
         S.lastErr = net ? '연결이 끊겼습니다. 다시 연결되면 이어서 올립니다' : (e.message || String(e));
         if (S.reach === 'ok') S.reach = navigator.onLine ? 'down' : 'offline';
       }
-      S.backoff = Math.min(300e3, (S.backoff || 15e3) * 2);
+      // PC가 꺼져 있으면 천천히(30초~5분), 잠깐 끊긴 것이면 빨리(5·10·20초…최대 2분) 다시
+      S.backoff = e && e.message === 'down' ? Math.min(300e3, (S.backoff || 15e3) * 2) : Math.min(120e3, S.backoff ? S.backoff * 2 : 5e3);
       clearTimeout(S.nextT); S.nextT = setTimeout(pump, S.backoff);
     } finally {
       S.running = false; S.cur = null;
@@ -8861,6 +8872,27 @@ ${lines}`;
       renderSheet();
       if (S.again) { S.again = false; if (!S.backoff) kick(200); } // 올리는 동안 들어온 부탁(배포 취소 등)은 끝나고 바로 한 번 더
     }
+  }
+  // PC에서 파일을 보내면 바로 알도록 요청 하나를 걸어 둔다 (화면이 켜져 있을 때만, 25초마다 새로)
+  const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+  async function waitLoop() {
+    if (S.waiting || !S.waitOK) return;
+    S.waiting = true;
+    let v = -1, fails = 0;
+    try {
+      while (configured() && S.waitOK && !document.hidden && S.base) {
+        const st = await call('/api/t/wait?v=' + v, { timeout: 40000 }).catch(() => null);
+        if (!st || !st.ok) {
+          if (st && (st.status === 404 || st.status === 405)) { S.waitOK = false; break; }
+          if (st && st.status === 401) { kick(0); break; }
+          if (++fails >= 3) break;
+          await sleep(5000); continue;
+        }
+        fails = 0;
+        if (v !== -1 && st.j.v !== v) kick(150);
+        v = st.j.v;
+      }
+    } finally { S.waiting = false; }
   }
   function revoked() {
     if (!S.cfg.revoked) S.cfg.revokedAt = Date.now();
@@ -8929,6 +8961,18 @@ ${lines}`;
     const meta = { name: r.name, size: r.size, sha256: r.sha, kind: r.kind, site: r.site, trade: ph ? (ph.trade || '') : r.trade, user: r.user, createdAt: ph ? ph.takenAt : r.createdAt };
     if (r.sref) meta.ref = r.sref;
     if (ph) meta.extra = photoMeta(ph);
+    if (S.oneShot !== false && r.size <= ONE_SHOT) {   // 작은 파일(사진 등)은 한 번에
+      r.state = 'up'; r.sent = 0; renderProgress(r);
+      const one = await call('/api/t/up1?m=' + b64url(JSON.stringify(meta)), { method: 'POST', body: blob, headers: { 'Content-Type': 'application/octet-stream' }, timeout: 120000 });
+      if (one.status === 404 || one.status === 405) S.oneShot = false;   // 옛 PC 프로그램 → 나눠 올리기
+      else {
+        if (one.status === 401) { revoked(); throw new Error('revoked'); }
+        if (one.status === 413 || one.status === 400) return fail(r, one.j.error || '현장 PC가 받지 않았습니다');
+        if (!one.ok) throw new Error(one.j.error || ('현장 PC 오류 ' + one.status));
+        if (one.j.dup && ph) okOrThrow(await call('/api/t/meta', { method: 'POST', json: { type: 'photo', id: ph.id, meta: photoMeta(ph) } }));
+        return finish(r);
+      }
+    }
     const st = await call('/api/t/up', { method: 'POST', json: meta });
     if (st.status === 401) { revoked(); throw new Error('revoked'); }
     if (st.status === 413 || st.status === 400) return fail(r, st.j.error || '현장 PC가 받지 않았습니다');
@@ -9338,7 +9382,7 @@ ${lines}`;
     if (!ON) return;
     window.addEventListener('online', () => { S.backoff = 0; kick(800); });
     window.addEventListener('offline', () => { S.reach = 'offline'; renderChip(); });
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) kick(500); });
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { kick(500); waitLoop(); } });
     if (navigator.connection && navigator.connection.addEventListener) navigator.connection.addEventListener('change', () => kick(800));
     setInterval(() => { if (!S.running) kick(0); }, 60e3);
     const chip = $('#sync-chip'); if (chip) chip.addEventListener('click', openSheet);
