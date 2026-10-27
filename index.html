@@ -1002,7 +1002,7 @@
 <div class="drop" id="drop" hidden>놓으면 자료함에 추가합니다</div>
 <button class="rec-pill" id="rec-pill" type="button" hidden><i class="dot" aria-hidden="true"></i>녹음 중 <span id="rec-pill-t" class="num">0:00</span><span class="go">회의록 보기</span></button>
 
-<script>window.MYCM_TARGET = 'pwa'; window.MYCM_VERSION = '2.6.3';</script>
+<script>window.MYCM_TARGET = 'pwa'; window.MYCM_VERSION = '2.6.4';</script>
 <script src="vendor/earcut.min.js"></script>
 <script src="vendor/pdf.min.js"></script>
 <script>
@@ -2984,7 +2984,7 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
   const Cap = window.Capacitor;
   const native = !!(Cap && Cap.isNativePlatform && Cap.isNativePlatform());
   const reg = (n) => (native && Cap.registerPlugin ? Cap.registerPlugin(n) : null);
-  const FS = reg('Filesystem'), Share = reg('Share'), AppP = reg('App'), Awake = reg('KeepAwake'), Stt = reg('OfflineStt'), Gal = reg('Gallery');
+  const FS = reg('Filesystem'), Share = reg('Share'), AppP = reg('App'), Awake = reg('KeepAwake'), Stt = reg('OfflineStt'), Gal = reg('Gallery'), Cam = reg('FieldCamera');
   const FOLDER = 'MooyoungCM';
 
   function toB64(blob) {
@@ -3148,8 +3148,20 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
     } finally { FS.deleteFile({ path, directory: 'CACHE' }).catch(() => {}); }
   }
 
+  // 빠른 사진 찍기: 안드로이드가 찍고·갤러리에 원본 복사·줄이기까지 하고, 줄인 파일만 받아 온다
+  async function takePhoto(o) {
+    const r = await Cam.take({ maxSide: 2400, thumbSide: 480, quality: 86, gallery: !!o.gallery, album: 'MYCM-ON', name: o.name || '' });
+    if (!r || r.cancelled) return null;
+    const get = async (p) => { const res = await fetch(Cap.convertFileSrc('file://' + p)); if (!res.ok) throw new Error('사진을 읽지 못했습니다'); return res.blob(); };
+    try {
+      const full = await get(r.full), thumb = await get(r.thumb);
+      return { full: new Blob([full], { type: 'image/jpeg' }), thumb: new Blob([thumb], { type: 'image/jpeg' }), w: r.w, h: r.h, takenAt: r.takenAt, gallery: !!r.gallery, galleryErr: r.galleryErr || '' };
+    } finally { Cam.cleanup({ paths: [r.full, r.thumb] }).catch(() => {}); }
+  }
+
   window.MYCM_NATIVE = {
     stt,
+    takePhoto: Cam ? takePhoto : null,
     toGallery: Gal ? toGallery : null,
     native,
     use(name) {
@@ -7417,7 +7429,25 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
   const sheetPhotos = () => sitePhotos().filter(p => p.inSheet).sort((a, b) => a.takenAt - b.takenAt);
 
   // ---------- 사진 넣기 ----------
-  function capture() {
+  async function capture() {
+    const N = window.MYCM_NATIVE;
+    if (N && N.takePhoto && !S.camFail) {   // 설치형 앱: 안드로이드가 바로 줄여 준다 (빠름)
+      const last = App.store.get('ph.last', { trade: '건축', dong: '', floor: '', part: '' });
+      const d = new Date(), z = (n) => String(n).padStart(2, '0');
+      const name = (`MYCM-ON_${d.getFullYear()}${z(d.getMonth() + 1)}${z(d.getDate())}_${z(d.getHours())}${z(d.getMinutes())}${z(d.getSeconds())}_` + ([last.dong, last.floor, last.part].filter(Boolean).join('_') || (App.site ? App.site.name : '현장')) + '.jpg').replace(/[\\/:*?"<>|\s]+/g, '_');
+      let r;
+      try { r = await N.takePhoto({ gallery: App.store.get('ph.gallery', true) !== false, name }); }
+      catch (e) {
+        console.warn('camera', e);
+        if (e && e.code === 'denied') { App.toast(e.message || '카메라 권한이 없습니다.', true); return; }
+        S.camFail = true;   // 이 기기에서 안 되면 아래 예전 방식으로
+      }
+      if (!S.camFail) {
+        if (!r) return;   // 찍지 않고 돌아옴
+        if (r.galleryErr) App.toast('갤러리에는 저장하지 못했습니다 (' + r.galleryErr + '). 앱 안에는 저장됩니다.', true);
+        return storePhotos([{ full: { blob: r.full, w: r.w, h: r.h }, thumb: { blob: r.thumb }, takenAt: r.takenAt }]);
+      }
+    }
     const inp = $('#in-camera');
     inp.onchange = () => { const fl = Array.from(inp.files || []); inp.value = ''; if (fl.length) importFiles(fl, true); };
     inp.click();
@@ -7456,6 +7486,37 @@ window.MYCM_TERMS = "# MYCM-ON 기본 건설 용어집\n# 한 줄에 하나. 띄
       console.warn('gallery', e);
       if (!galWarned) { galWarned = true; App.toast('사진을 갤러리에 저장하지 못했습니다' + (e && e.code === 'denied' ? ' (저장 권한을 허용해 주세요)' : '') + '. 앱 안에는 저장되어 있습니다.', true); }
     });
+  }
+  // 안드로이드가 줄여 준 사진 넣기
+  async function storePhotos(items) {
+    if (App.view !== 'photos') App.go('photos');
+    const last = App.store.get('ph.last', { trade: '건축', dong: '', floor: '', part: '' });
+    let lastId = null;
+    try {
+      for (const it of items) {
+        App.busy(true, '사진 저장 중', 0.6, '');
+        const id = App.uid();
+        const p = { id, siteId: App.siteId(), takenAt: it.takenAt || Date.now(), trade: last.trade || '건축', dong: last.dong || '', floor: last.floor || '', part: last.part || '', memo: '', inSheet: false, w: it.full.w, h: it.full.h, size: it.full.blob.size };
+        await App.DB.put('blobs', it.full.blob, 'ph:' + id + ':full');
+        await App.DB.put('blobs', it.thumb.blob, 'ph:' + id + ':thumb');
+        await App.DB.put('photos', p);
+        App.photos.push(p);
+        if (App.sync) App.sync.addPhoto(p);
+        lastId = id;
+      }
+    } catch (e) {
+      console.error(e);
+      App.busy(false);
+      App.toast('사진을 저장하지 못했습니다. 기기 저장 공간을 확인해 주세요. (' + (e && e.message ? e.message : e) + ')', true);
+      render();
+      return;
+    }
+    App.busy(false);
+    const p = App.photos.find(x => x.id === lastId);
+    if (p && !inRange(p)) S.range = 'all';
+    S.trade = '전체'; S.sel = lastId;
+    render();
+    App.toast('사진을 저장했습니다. 위치와 메모를 적어 주세요.');
   }
   async function importFiles(files, fromCamera) {
     const imgs = files.filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|heic|webp)$/i.test(f.name));
