@@ -1,6 +1,6 @@
 /* MYCM-ON 웹앱 서비스 워커: 앱 파일을 기기에 보관해 인터넷 없이도 열리게 한다.
  * 새 판이 올라오면 받아 두었다가, 앱에서 [지금 바꾸기]를 누르면 바뀐다. */
-const VERSION = '2.6.0-066b06fe18';
+const VERSION = '2.6.1-0c016ea50f';
 const PRECACHE = ["./", "NotoSansKR-Field.ttf", "cmaps-ko.json", "fonts.css", "index.html", "intro_land.jpg", "intro_port.jpg", "libredwg-web.mjs", "libredwg.wasm", "logo.png", "manifest.webmanifest", "pdf.worker.min.js", "rhwp.js", "rhwp_bg.wasm", "symbol.png", "icons/apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/maskable-512.png", "samples/checklist.pdf", "samples/plan84.dxf.txt", "vendor/earcut.min.js", "vendor/fontkit.umd.min.js", "vendor/jsQR.js", "vendor/pdf-lib.min.js", "vendor/pdf.min.js"];
 const CACHE = 'mycm-app-' + VERSION;
 const FONTS = 'mycm-fonts-1';   // 글꼴 조각: 쓸 때 받아 보관 (판이 바뀌어도 그대로 쓴다)
